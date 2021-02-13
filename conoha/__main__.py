@@ -1,6 +1,4 @@
-def main():
-    print('hello, world!')
-
+from conoha.cli import main
 
 if __name__ == '__main__':
     main()
