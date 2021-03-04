@@ -1,19 +1,18 @@
 import argparse
 
-
 def get_parser():
     parser = argparse.ArgumentParser()
-    subparsers = parser.add_subparsers()
+    subparsers = parser.add_subparsers(dest="subcommand")
 
 
     # auth
-    auth = subparsers.add_parser('auth').add_subparsers()
+    auth = subparsers.add_parser('auth').add_subparsers(dest="subsubcommand")
     auth_login = auth.add_parser('login')
     auth_logout = auth.add_parser('logout')
 
 
     # conoha server
-    server = subparsers.add_parser('server').add_subparsers()
+    server = subparsers.add_parser('server').add_subparsers(dest="subsubcommand")
 
     # conoha server create options...
     # https://www.conoha.jp/docs/compute-create_vm.php
@@ -96,4 +95,5 @@ def get_parser():
 def main():
     parser = get_parser()
     args = parser.parse_args()
-    print(args)
+    print(vars(args))
+    #args.handler(**vars(args))
