@@ -37,7 +37,7 @@ def get_command():
         '--metadata', help='metadata の key:value ペア。'
     ).add_argument(
         '--instance-name-tag',
-        help='ネームタグを入れる際に利用する。文字種：半角英数字、「 - 」、「 _ 」のみを許可。文字数：255文字以下, Default:VMに紐づくGlobalIPアドレス '
+        help='ネームタグを入れる際に利用する。文字種：半角英数字、「 - 」、「 _ 」のみを許可。文字数：255文字以下, Default:VMに紐づくGlobalIPアドレス'
     ).add_argument(
         '--block-device-mapping', nargs='+', help='deviceは１つのみマッピングできる'
     ).add_argument(
@@ -82,19 +82,27 @@ def get_command():
     command.subcommand('server').subcommand('detach-port').add_argument(
         '--server-id', help='サーバーID', required=True
     ).add_argument(
-        '--port-id', help='ポート', required=True
+        '--port-id', help='ポートID', required=True
     ).set_handler(nop)
 
     ##########
     # subnet #
     ##########
 
-    # command.subcommand('subnet').subcommand('create').add_argument(
-    # ).set_handler(nop)
-    # command.subcommand('subnet').subcommand('delete').add_argument(
-    # ).set_handler(nop)
-    # command.subcommand('subnet').subcommand('describe').add_argument(
-    # ).set_handler(nop)
+    # conoha subnet create ...
+    command.subcommand('subnet').subcommand('create').add_argument(
+        '--network-id', help='ローカルネットワークのnetwork_idを指定する', required=True
+    ).add_argument(
+        '--cidr', help='プライベートアドレスのみ指定できます。bitmaskは21~27の間が指定できます。', required=True
+    ).set_handler(nop)
+    # conoha subnet delete --subnet-id SUBNET_ID
+    command.subcommand('subnet').subcommand('delete').add_argument(
+        '--subnet-id', help='サブネットID', required=True
+    ).set_handler(nop)
+    # conoha subnet describe --subnet-id SUBNET_ID
+    command.subcommand('subnet').subcommand('describe').add_argument(
+        '--subnet-id', help='サブネットID', required=True
+    ).set_handler(nop)
 
     ##################
     # security-group #
