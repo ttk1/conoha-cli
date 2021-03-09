@@ -12,7 +12,10 @@ def get_command():
     # auth #
     ########
 
+    # conoha auth login
     command.subcommand('auth').subcommand('login').set_handler(nop)
+
+    # conoha auth logout
     command.subcommand('auth').subcommand('logout').set_handler(nop)
 
     ##########
@@ -44,35 +47,42 @@ def get_command():
     ).add_argument(
         '--user-data', help='base64 encoded Cloud-Init script'
     ).set_handler(nop)
+
     # conoha server start --server-id SERVER_ID
     command.subcommand('server').subcommand('start').add_argument(
-        '--server-id', required=True
+        '--server-id', help='サーバーID', required=True
     ).set_handler(nop)
+
     # conoha server stop --server-id SERVER_ID
     command.subcommand('server').subcommand('stop').add_argument(
-        '--server-id', required=True
+        '--server-id', help='サーバーID', required=True
     ).set_handler(nop)
+
     # conoha server delete --server-id SERVER_ID
     command.subcommand('server').subcommand('delete').add_argument(
-        '--server-id', required=True
+        '--server-id', help='サーバーID', required=True
     ).set_handler(nop)
+
     # conoha server list
     command.subcommand('server').subcommand('list').set_handler(nop)
+
     # conha server describe --server-id SERVER_ID
     command.subcommand('server').subcommand('describe').add_argument(
-        '--server-id', required=True
+        '--server-id', help='サーバーID', required=True
     ).set_handler(nop)
+
     # conoha sercer attach-port --server-id SERVER_ID --port-id PORT_ID
     command.subcommand('server').subcommand('attach-port').add_argument(
-        '--server-id', required=True
+        '--server-id', help='サーバーID', required=True
     ).add_argument(
-        '--port-id', required=True
+        '--port-id', help='ポートID', required=True
     ).set_handler(nop)
+
     # conoha sercer detach-port --server-id SERVER_ID --port-id PORT_ID
     command.subcommand('server').subcommand('detach-port').add_argument(
-        '--server-id', required=True
+        '--server-id', help='サーバーID', required=True
     ).add_argument(
-        '--port-id', required=True
+        '--port-id', help='ポート', required=True
     ).set_handler(nop)
 
     ##########
