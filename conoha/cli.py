@@ -95,10 +95,12 @@ def get_command():
     ).add_argument(
         '--cidr', help='プライベートアドレスのみ指定できます。bitmaskは21~27の間が指定できます。', required=True
     ).set_handler(nop)
+
     # conoha subnet delete --subnet-id SUBNET_ID
     command.subcommand('subnet').subcommand('delete').add_argument(
         '--subnet-id', help='サブネットID', required=True
     ).set_handler(nop)
+
     # conoha subnet describe --subnet-id SUBNET_ID
     command.subcommand('subnet').subcommand('describe').add_argument(
         '--subnet-id', help='サブネットID', required=True
@@ -108,14 +110,42 @@ def get_command():
     # security-group #
     ##################
 
-    # command.subcommand('security-group').subcommand('create').add_argument(
-    # ).set_handler(nop)
-    # command.subcommand('security-group').subcommand('delete').add_argument(
-    # ).set_handler(nop)
-    # command.subcommand('security-group').subcommand('list').add_argument(
-    # ).set_handler(nop)
-    # command.subcommand('security-group').subcommand('describe').add_argument(
-    # ).set_handler(nop)
+    # conoha security-group create ...
+    command.subcommand('security-group').subcommand('create').add_argument(
+        '--name', help='A symbolic name for the security group. 名前の重複はできません。', required=True
+    ).add_argument(
+        '--description', help='Describes the security group.'
+    ).set_handler(nop)
+
+    # conoha security-group delete --group-id GROUP_ID
+    command.subcommand('security-group').subcommand('delete').add_argument(
+        '--security-group-id', help='セキュリティグループID', required=True
+    ).set_handler(nop)
+
+    # conoha security-group list
+    command.subcommand('security-group').subcommand('list').set_handler(nop)
+
+    # conoha security-group describe --group-id GROUP_ID
+    command.subcommand('security-group').subcommand('describe').add_argument(
+        '--security-group-id', help='セキュリティグループID', required=True
+    ).set_handler(nop)
+
+    # conoha security-group create-rule --group-id GROUP_ID ...
+    command.subcommand('security-group').subcommand('create-rule').add_argument(
+        '--security-group-id', help='セキュリティグループID', required=True
+    ).add_argument(
+        # TODO
+    ).set_handler(nop)
+
+    # conoha security-group delete-rule --rule-id RULE_ID
+    command.subcommand('security-group').subcommand('delete-rule').add_argument(
+        '--rule-id', help='セキュリティグループルールID', required=True
+    ).set_handler(nop)
+
+    # conoha security-group describe-rule --rule-id RULE_ID
+    command.subcommand('security-group').subcommand('describe-rule').add_argument(
+        '--rule-id', help='セキュリティグループルールID', required=True
+    ).set_handler(nop)
 
     ###########
     # network #
