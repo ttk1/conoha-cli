@@ -167,7 +167,7 @@ def get_command():
     # conoha network create
     command.subcommand('network').subcommand('create').set_handler(nop)
 
-    # conoha network delete
+    # conoha network delete --network-id NETWORK_ID
     command.subcommand('network').subcommand('delete').add_argument(
         '--network-id', help='ネットワークID', required=True
     ).set_handler(nop)
@@ -175,7 +175,7 @@ def get_command():
     # conoha network list
     command.subcommand('network').subcommand('list').set_handler(nop)
 
-    # conoha network describe
+    # conoha network describe --network-id NETWORK_ID
     command.subcommand('network').subcommand('describe').add_argument(
         '--network-id', help='ネットワークID', required=True
     ).set_handler(nop)
@@ -184,14 +184,29 @@ def get_command():
     # port #
     ########
 
-    # command.subcommand('port').subcommand('create').add_argument(
-    # ).set_handler(nop)
-    # command.subcommand('port').subcommand('delete').add_argument(
-    # ).set_handler(nop)
-    # command.subcommand('port').subcommand('list').add_argument(
-    # ).set_handler(nop)
-    # command.subcommand('port').subcommand('describe').add_argument(
-    # ).set_handler(nop)
+    # conoha port create ...
+    command.subcommand('port').subcommand('create').add_argument(
+        '--network-id', help='ネットワークID', required=True
+    ).add_argument(
+        '--security-group-id', nargs='+', help='指定がない場合はDefaultのセキュリティグループが設定される'
+    ).add_argument(
+        '--fixed-ip', nargs='+', help='IPアドレスを指定したい時に利用する'
+    ).add_argument(
+        '--allowed-address-pair', nargs='+', help='VIPを利用する際に指定する, 未実装'
+    ).set_handler(nop)
+
+    # conoha port delete --port-id PORT_ID
+    command.subcommand('port').subcommand('delete').add_argument(
+        '--port-id', help='ポートID', required=True
+    ).set_handler(nop)
+
+    # conoha port list
+    command.subcommand('port').subcommand('list').set_handler(nop)
+
+    # conoha port describe --port-id PORT_ID
+    command.subcommand('port').subcommand('describe').add_argument(
+        '--port-id', help='ポートID', required=True
+    ).set_handler(nop)
 
     return command
 
