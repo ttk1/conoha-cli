@@ -132,9 +132,22 @@ def get_command():
 
     # conoha security-group create-rule --group-id GROUP_ID ...
     command.subcommand('security-group').subcommand('create-rule').add_argument(
+        '--direction', choices=['ingress', 'egress'], help='セキュリティグループルールが反映される方向', required=True
+    ).add_argument(
+        '--ether-type', choices=['IPv4', 'IPv6'], help='イーサタイプ', required=True
+    ).add_argument(
         '--security-group-id', help='セキュリティグループID', required=True
     ).add_argument(
-        # TODO
+        '--port-range-min', help='セキュリティグループルールを範囲で設定する場合の最小ポート番号'
+    ).add_argument(
+        '--port-range-max', help='セキュリティグループルールを範囲で設定する場合の最大ポート番号'
+    ).add_argument(
+        '--protocol', choices=['tcp', 'udp', 'icmp', 'null'],
+        help='セキュリティグループルールが設定されるプロトコル。null を指定した場合すべての protocol を許可'
+    ).add_argument(
+        '--remote-group-id', help='指定したセキュリティグループIDに紐付いたポートからのトラフィックのみを許可'
+    ).add_argument(
+        '--remote-ip-prefix', help='指定した prefix を持つ IP からのトラフィックのみを許可'
     ).set_handler(nop)
 
     # conoha security-group delete-rule --rule-id RULE_ID
