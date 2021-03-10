@@ -164,14 +164,21 @@ def get_command():
     # network #
     ###########
 
-    # command.subcommand('network').subcommand('create').add_argument(
-    # ).set_handler(nop)
-    # command.subcommand('network').subcommand('delete').add_argument(
-    # ).set_handler(nop)
-    # command.subcommand('network').subcommand('list').add_argument(
-    # ).set_handler(nop)
-    # command.subcommand('network').subcommand('describe').add_argument(
-    # ).set_handler(nop)
+    # conoha network create
+    command.subcommand('network').subcommand('create').set_handler(nop)
+
+    # conoha network delete
+    command.subcommand('network').subcommand('delete').add_argument(
+        '--network-id', help='ネットワークID', required=True
+    ).set_handler(nop)
+
+    # conoha network list
+    command.subcommand('network').subcommand('list').set_handler(nop)
+
+    # conoha network describe
+    command.subcommand('network').subcommand('describe').add_argument(
+        '--network-id', help='ネットワークID', required=True
+    ).set_handler(nop)
 
     ########
     # port #
