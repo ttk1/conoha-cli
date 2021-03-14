@@ -1,4 +1,4 @@
-# CONOHA CLI
+# ConoHa CLI
 
 ConoHa API を CLI で良しなに扱うための何か。
 

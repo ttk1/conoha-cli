@@ -1,4 +1,7 @@
 from executor import Command
+from .api import (
+    auth
+)
 
 
 def nop(*args, **kwargs):
@@ -13,7 +16,7 @@ def get_command():
     ########
 
     # conoha auth login
-    command.subcommand('auth').subcommand('login').set_handler(nop)
+    command.subcommand('auth').subcommand('login').set_handler(auth.auth_login)
 
     # conoha auth logout
     command.subcommand('auth').subcommand('logout').set_handler(nop)
