@@ -1,12 +1,10 @@
-import json
 from getpass import getpass
 import conoha.api.config as config
 
 
 def auth_login():
     try:
-        with open(config.credential_path, mode='r', encoding='utf-8') as f:
-            credential = json.load(f)
+        credential = config.get_credential()
     except FileNotFoundError:
         with open(config.credential_path, mode='w', encoding='utf-8') as f:
             credential = {
@@ -14,7 +12,7 @@ def auth_login():
                 'password': getpass('Enter password: '),
                 'tenant_id': input('Enter tenant id: ')
             }
-            json.dump(credential, f)
+            config.save_credential(credential)
 
     data = {
         'auth': {
