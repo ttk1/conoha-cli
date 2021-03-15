@@ -1,5 +1,5 @@
 from executor import Command
-from .api import (
+from conoha import (
     auth
 )
 

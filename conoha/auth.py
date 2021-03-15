@@ -1,5 +1,6 @@
 from getpass import getpass
-import conoha.api.config as config
+from conoha import config
+from conoha.api import identity
 
 
 def auth_login():
@@ -22,9 +23,14 @@ def auth_login():
             'tenantId': credential['tenant_id']
         }
     }
-
-    print(data)
+    res = identity.get_token(data)
+    token = {
+        'token_id': res["access"]["token"]["id"],
+        'expires': res["access"]["token"]["expires"]
+    }
+    config.save_token(token)
 
 
 def auth_logout():
+    # 未実装
     pass
