@@ -25,7 +25,7 @@ def auth_login():
     }
     res = identity.get_token(data)
     token = {
-        'token_id': res["access"]["token"]["id"],
+        'id': res["access"]["token"]["id"],
         'expires': res["access"]["token"]["expires"]
     }
     config.save_token(token)

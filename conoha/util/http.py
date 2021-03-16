@@ -11,4 +11,7 @@ def post(url, data, headers):
 
 
 def get(url, headers):
-    pass
+    req = urllib.request.Request(url, headers=headers)
+    with urllib.request.urlopen(req) as res:
+        body = res.read()
+        return json.loads(body.decode('utf-8'))

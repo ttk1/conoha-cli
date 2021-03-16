@@ -30,14 +30,13 @@ ConoHa API を CLI で良しなに扱うための何か。
 }
 ```
 
-* `tenant_id` は不要かもしれない
 * 設定が無ければプロンプトで入力を求める
 
 ### `~/.conoha/token.json`
 
 ```json
 {
-  "token_id": "hogehgoefugafuga",
+  "id": "hogehgoefugafuga",
   "expires": "2099-09-19T09:09:09Z"
 }
 ```

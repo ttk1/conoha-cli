@@ -1,6 +1,7 @@
 from executor import Command
-from conoha import (
-    auth
+from conoha.command import (
+    auth,
+    server
 )
 
 
@@ -67,7 +68,7 @@ def get_command():
     ).set_handler(nop)
 
     # conoha server list
-    command.subcommand('server').subcommand('list').set_handler(nop)
+    command.subcommand('server').subcommand('list').set_handler(server.server_list)
 
     # conha server describe --server-id SERVER_ID
     command.subcommand('server').subcommand('describe').add_argument(
