@@ -1,6 +1,8 @@
 from executor import Command
 from conoha.command import (
     auth,
+    flavor,
+    image,
     server
 )
 
@@ -21,6 +23,20 @@ def get_command():
 
     # conoha auth logout
     command.subcommand('auth').subcommand('logout').set_handler(nop)
+
+    ##########
+    # flavor #
+    ##########
+
+    # conoha flavor list
+    command.subcommand('flavor').subcommand('list').set_handler(flavor.flavor_list)
+
+    #########
+    # image #
+    #########
+
+    # conoha flavor list
+    command.subcommand('image').subcommand('list').set_handler(image.image_list)
 
     ##########
     # server #
