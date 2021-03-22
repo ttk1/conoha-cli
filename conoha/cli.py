@@ -89,7 +89,7 @@ def get_command():
     # conha server describe --server-id SERVER_ID
     command.subcommand('server').subcommand('describe').add_argument(
         '--server-id', help='サーバーID', required=True
-    ).set_handler(nop)
+    ).set_handler(server.server_describe)
 
     # conoha sercer attach-port --server-id SERVER_ID --port-id PORT_ID
     command.subcommand('server').subcommand('attach-port').add_argument(

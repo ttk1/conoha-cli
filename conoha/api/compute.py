@@ -26,3 +26,11 @@ def list_servers():
         'X-Auth-Token': config.get_token()['id']
     }
     return http.get(f'{url}/servers', headers)
+
+
+def describe_server(server_id):
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    return http.get(f'{url}/servers/{server_id}', headers)
