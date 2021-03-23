@@ -2,3 +2,4 @@ conoha.egg-info/
 *.pyc
 *.code-workspace
 dev/
+.vscode/

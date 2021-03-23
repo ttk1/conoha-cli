@@ -1,4 +1,7 @@
-from conoha import config
+'''
+conoha image コマンドの処理部分
+'''
+
 from conoha.api import compute
 from conoha.util.misc import print_json
 

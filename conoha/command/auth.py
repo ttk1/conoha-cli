@@ -1,3 +1,7 @@
+'''
+conoha auth コマンドの処理部分
+'''
+
 from getpass import getpass
 from conoha import config
 from conoha.api import identity
@@ -14,6 +18,7 @@ def auth_login():
         }
         config.save_credential(credential)
 
+    # これは API の方で記述すべし
     data = {
         'auth': {
             'passwordCredentials': {

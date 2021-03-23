@@ -44,29 +44,29 @@ def get_command():
 
     # conoha server create ...
     command.subcommand('server').subcommand('create').add_argument(
-        '--image-ref', help='image 参照先。対象 image の UUID を指定', required=True
+        '--image-ref', help='使用するイメージの UUID を指定', required=True
     ).add_argument(
-        '--flavor-ref', help='VMプラン(flavor) の UUID を指定', required=True
+        '--flavor-ref', help='VM プラン（flavor）の UUID を指定', required=True
     ).add_argument(
-        '--admin-pass', help='VMのrootパスワード'
+        '--admin-pass', help='VM の root パスワードを指定（使用可能な文字については要確認）'
     ).add_argument(
-        '--key-name', help='SSHキーを利用する場合に指定する '
+        # あらかじめ公開鍵を登録しておく必要あり！
+        '--key-name', help='SSH キーの名前を指定'
     ).add_argument(
-        '--security-groups', help='keyに”name“を、valueにセキュリティグループ名を指定する'
-    ).add_argument(
-        '--metadata', help='metadata の key:value ペア。'
+        # 何も設定しないと、立ち上げ直後外との通信が出来ない状態になる
+        '--security-groups', help='セキュリティグループ名を指定', nargs='+'
     ).add_argument(
         '--instance-name-tag',
         help='ネームタグを入れる際に利用する。文字種：半角英数字、「 - 」、「 _ 」のみを許可。文字数：255文字以下, Default:VMに紐づくGlobalIPアドレス'
     ).add_argument(
-        '--block-device-mapping', nargs='+', help='deviceは１つのみマッピングできる'
+        # API の仕様で一つしか指定できない
+        '--volume-id', help='アタッチする Volume の ID を指定'
     ).add_argument(
-        '--volume-id', help='アタッチしたいVolumeのIDを指定する'
+        '--vnc-keymap', choices=['en-us', 'ja'], help='キーマップを指定'
     ).add_argument(
-        '--vnc-keymap', choices=['en-us', 'ja'], help='keymap 設定'
-    ).add_argument(
-        '--user-data', help='base64 encoded Cloud-Init script'
-    ).set_handler(nop)
+        # ファイル指定でも良いかもしれない
+        '--user-data', help='スタートアップスクリプトを指定（BASE64 エンコードはしなくてよい）'
+    ).set_handler(server.server_create)
 
     # conoha server start --server-id SERVER_ID
     command.subcommand('server').subcommand('start').add_argument(

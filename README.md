@@ -111,3 +111,48 @@ conoha flavor list | wsl jq -r '.flavors[] | select(.name == "g-4gb") | .id, .na
 # 正規表現
 conoha flavor list | wsl jq -r '.flavors[] | select(.name | test("512")) | .id, .name'
 ```
+
+## server create
+
+サーバーの作成には `image_ref` と `flavor_ref` の二つが必要になる。
+この二つは
+
+```sh
+conoha image list
+conoha flavor list
+```
+
+で調べることが出来る。
+
+ここでは
+
+* イメージ: ubuntu 20.04
+* プラン: メモリ512MB
+
+のものを探してみる。
+
+```sh
+# ubuntu-20.04 を名前に含む image を抽出
+conoha image list | wsl jq '.images[] | select(.name | test("ubuntu-20.04")) | .name, .id'
+
+# m512 を名前に含む flavor を抽出
+conoha flavor list | wsl jq '.flavors[] | select(.name | test("m512")) | .name, .id'
+```
+
+多分
+
+* image name: vmi-ubuntu-20.04.02-amd64-30gb
+* flavor name: g-c1m512d30
+
+のやつが求めているものだろう。
+
+早速サーバーを立ち上げてみる。
+
+```sh
+conoha server create \
+  --image-ref '上で確認した image_id' \
+  --flavor-ref '上で確認した flavor_id' \
+  --instance-name-tag '分かりやすい名前を付ける'
+```
+
+コマンドのレスポンスに `adminPass` が含まれるので、忘れないようにメモする（ログイン後変更すべし！）。
