@@ -102,3 +102,43 @@ def create_server(image_ref, flavor_ref,
             user_data.encode(encoding='utf-8')
         ).decode(encoding='utf-8')
     return http.post(f'{endpoint}/servers', data, headers)
+
+
+def start_server(server_id):
+    '''
+    https://www.conoha.jp/docs/compute-power_on_vm.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    data = {
+        'os-start': None
+    }
+    return http.post(f'{endpoint}/servers/{server_id}/action', data, headers)
+
+
+def stop_server(server_id):
+    '''
+    通常停止: https://www.conoha.jp/docs/compute-stop_cleanly_vm.php
+    強制停止: https://www.conoha.jp/docs/compute-stop_forcibly_vm.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    data = {
+        'os-stop': None
+    }
+    return http.post(f'{endpoint}/servers/{server_id}/action', data, headers)
+
+
+def delete_server(server_id):
+    '''
+    https://www.conoha.jp/docs/compute-delete_vm.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    return http.delete(f'{endpoint}/servers/{server_id}', headers)

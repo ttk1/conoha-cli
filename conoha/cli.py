@@ -8,7 +8,7 @@ from conoha.command import (
 
 
 def nop(*args, **kwargs):
-    pass
+    print('未実装！')
 
 
 def get_command():
@@ -71,17 +71,17 @@ def get_command():
     # conoha server start --server-id SERVER_ID
     command.subcommand('server').subcommand('start').add_argument(
         '--server-id', help='サーバーID', required=True
-    ).set_handler(nop)
+    ).set_handler(server.server_start)
 
     # conoha server stop --server-id SERVER_ID
     command.subcommand('server').subcommand('stop').add_argument(
         '--server-id', help='サーバーID', required=True
-    ).set_handler(nop)
+    ).set_handler(server.server_stop)
 
     # conoha server delete --server-id SERVER_ID
     command.subcommand('server').subcommand('delete').add_argument(
         '--server-id', help='サーバーID', required=True
-    ).set_handler(nop)
+    ).set_handler(server.server_delete)
 
     # conoha server list
     command.subcommand('server').subcommand('list').set_handler(server.server_list)
