@@ -9,9 +9,9 @@ ConoHa API を CLI で良しなに扱うための何か。
 ```json
 {
   "endpoint": {
-    "identity": "https://hogehoge",
-    "compute": "https://hogehoge",
-    "network": "https://hogehoge"
+    "identity": "https://identity.tyo1.conoha.io/v2.0",
+    "compute": "https://compute.tyo1.conoha.io/v2/{tenant_id}",
+    "network": "https://networking.tyo1.conoha.io/v2.0"
   }
 }
 ```
@@ -19,6 +19,7 @@ ConoHa API を CLI で良しなに扱うための何か。
 * エンドポイントの設定等をとりあえずここに入れておく
 * **今は手動で作成する**ようになっているが、今後は API から自動で取得するようにしたい
 * 現状実装済みなのは `identity`, `compute`, `network` の三つのみ
+* とりあえず、バージョンのパスまで含める形式で
 
 ### `~/.conoha/credential.json`
 

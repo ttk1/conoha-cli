@@ -3,7 +3,8 @@ from conoha.command import (
     auth,
     flavor,
     image,
-    server
+    server,
+    network
 )
 
 
@@ -111,6 +112,7 @@ def get_command():
 
     # conoha subnet create ...
     command.subcommand('subnet').subcommand('create').add_argument(
+        # ローカルネットワークには高々１つのサブネットしか割り当てることが出来ない
         '--network-id', help='ローカルネットワークのnetwork_idを指定する', required=True
     ).add_argument(
         '--cidr', help='プライベートアドレスのみ指定できます。bitmaskは21~27の間が指定できます。', required=True
@@ -193,7 +195,7 @@ def get_command():
     ).set_handler(nop)
 
     # conoha network list
-    command.subcommand('network').subcommand('list').set_handler(nop)
+    command.subcommand('network').subcommand('list').set_handler(network.network_list)
 
     # conoha network describe --network-id NETWORK_ID
     command.subcommand('network').subcommand('describe').add_argument(
