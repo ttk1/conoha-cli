@@ -187,12 +187,12 @@ def get_command():
     ###########
 
     # conoha network create
-    command.subcommand('network').subcommand('create').set_handler(nop)
+    command.subcommand('network').subcommand('create').set_handler(network.network_create)
 
     # conoha network delete --network-id NETWORK_ID
     command.subcommand('network').subcommand('delete').add_argument(
         '--network-id', help='ネットワークID', required=True
-    ).set_handler(nop)
+    ).set_handler(network.network_delete)
 
     # conoha network list
     command.subcommand('network').subcommand('list').set_handler(network.network_list)
@@ -200,7 +200,7 @@ def get_command():
     # conoha network describe --network-id NETWORK_ID
     command.subcommand('network').subcommand('describe').add_argument(
         '--network-id', help='ネットワークID', required=True
-    ).set_handler(nop)
+    ).set_handler(network.network_describe)
 
     ########
     # port #

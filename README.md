@@ -25,9 +25,9 @@ ConoHa API を CLI で良しなに扱うための何か。
 
 ```json
 {
-  "user_name": "hoge",
-  "password": "fuga",
-  "tenant_id": "piyo"
+  "user_name": "{user_name}",
+  "password": "{password}",
+  "tenant_id": "{tenant_id}"
 }
 ```
 
@@ -157,3 +157,16 @@ conoha server create \
 ```
 
 コマンドのレスポンスに `adminPass` が含まれるので、忘れないようにメモする（ログイン後変更すべし！）。
+
+## network
+
+プライベートネットワークのみを取得したい場合、`shared` が `false` なものを選ぶと良い。
+
+```sh
+conoha network list | wsl jq '.networks[] | select(.shared == false)'
+```
+
+* ネットワークは作成したままだと、ConoHa コンソール上で表示されないみたいなので、サブネットを作成する必要がある
+* サブネットは一つのネットワークにつき１つまでしか設定できない
+* プライベートネットワークは１つのアカウントにつき 10 個まで作成できる
+* ConoHa コンソール上で表示されるのはサブネットの方の ID なので注意
