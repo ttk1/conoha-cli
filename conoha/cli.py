@@ -4,7 +4,8 @@ from conoha.command import (
     flavor,
     image,
     server,
-    network
+    network,
+    port
 )
 
 
@@ -158,7 +159,7 @@ def get_command():
     ).add_argument(
         '--ether-type', choices=['IPv4', 'IPv6'], help='イーサタイプ', required=True
     ).add_argument(
-        '--security-group-id', help='セキュリティグループID', required=True
+        '--security-group-ids', help='セキュリティグループID', required=True
     ).add_argument(
         '--port-range-min', help='セキュリティグループルールを範囲で設定する場合の最小ポート番号'
     ).add_argument(
@@ -207,28 +208,29 @@ def get_command():
     ########
 
     # conoha port create ...
+    # とりあえず固定 IP は必須にしておく
     command.subcommand('port').subcommand('create').add_argument(
         '--network-id', help='ネットワークID', required=True
     ).add_argument(
-        '--security-group-id', nargs='+', help='指定がない場合はDefaultのセキュリティグループが設定される'
+        '--ip-address', help='IPアドレス(IPv4, IPv6)', required=True
     ).add_argument(
-        '--fixed-ip', nargs='+', help='IPアドレスを指定したい時に利用する'
+        '--subnet-id', help='サブネットID', required=True
     ).add_argument(
-        '--allowed-address-pair', nargs='+', help='VIPを利用する際に指定する, 未実装'
-    ).set_handler(nop)
+        '--security-group-ids', nargs='+', help='指定がない場合はDefaultのセキュリティグループが設定される'
+    ).set_handler(port.port_create)
 
     # conoha port delete --port-id PORT_ID
     command.subcommand('port').subcommand('delete').add_argument(
         '--port-id', help='ポートID', required=True
-    ).set_handler(nop)
+    ).set_handler(port.port_delete)
 
     # conoha port list
-    command.subcommand('port').subcommand('list').set_handler(nop)
+    command.subcommand('port').subcommand('list').set_handler(port.port_list)
 
     # conoha port describe --port-id PORT_ID
     command.subcommand('port').subcommand('describe').add_argument(
         '--port-id', help='ポートID', required=True
-    ).set_handler(nop)
+    ).set_handler(port.port_describe)
 
     return command
 
