@@ -80,10 +80,10 @@ Windows OS の場合 Windows 版の jq コマンドを導入しても良いが�
 # 通常時
 jq < hoge.json
 
-# wsl 使用時
-wsl jq < hoge.json
+# wsl 使用時はエイリアスを設定すると良い
+alias jq='wsl jq'
 
-# ダブルクオート無し
+# ダブルクオート無しで結果を表示する
 jq -w < hoge.json
 ```
 
@@ -91,26 +91,26 @@ jq -w < hoge.json
 
 ```sh
 # id のみ
-conoha flavor list | wsl jq -r .flavors[].id
+conoha flavor list | jq -r .flavors[].id
 
 # id, name の順に交互に表示
-conoha flavor list | wsl jq -r '.flavors[] | .id, .name'
+conoha flavor list | jq -r '.flavors[] | .id, .name'
 
 # [id, name] の形式で表示
-conoha flavor list | wsl jq -r '.flavors[] | [.id, .name]'
+conoha flavor list | jq -r '.flavors[] | [.id, .name]'
 
 # {"id": id, "name": name} の形式で表示
-conoha flavor list | wsl jq -r '.flavors[] | {id, name}'
+conoha flavor list | jq -r '.flavors[] | {id, name}'
 ```
 
 ### 条件で絞り込み
 
 ```sh
 # name の完全一致
-conoha flavor list | wsl jq -r '.flavors[] | select(.name == "g-4gb") | .id, .name'
+conoha flavor list | jq -r '.flavors[] | select(.name == "g-4gb") | .id, .name'
 
 # 正規表現
-conoha flavor list | wsl jq -r '.flavors[] | select(.name | test("512")) | .id, .name'
+conoha flavor list | jq -r '.flavors[] | select(.name | test("512")) | .id, .name'
 ```
 
 ## server create
@@ -134,10 +134,10 @@ conoha flavor list
 
 ```sh
 # ubuntu-20.04 を名前に含む image を抽出
-conoha image list | wsl jq '.images[] | select(.name | test("ubuntu-20.04")) | .name, .id'
+conoha image list | jq '.images[] | select(.name | test("ubuntu-20.04")) | .name, .id'
 
 # m512 を名前に含む flavor を抽出
-conoha flavor list | wsl jq '.flavors[] | select(.name | test("m512")) | .name, .id'
+conoha flavor list | jq '.flavors[] | select(.name | test("m512")) | .name, .id'
 ```
 
 多分
@@ -163,7 +163,7 @@ conoha server create \
 プライベートネットワークのみを取得したい場合、`shared` が `false` なものを選ぶと良い。
 
 ```sh
-conoha network list | wsl jq '.networks[] | select(.shared == false)'
+conoha network list | jq '.networks[] | select(.shared == false)'
 ```
 
 * ネットワークは作成したままだと、ConoHa コンソール上で表示されないみたいなので、サブネットを作成する必要がある

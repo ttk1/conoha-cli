@@ -94,14 +94,14 @@ def get_command():
         '--server-id', help='サーバーID', required=True
     ).set_handler(server.server_describe)
 
-    # conoha sercer attach-port --server-id SERVER_ID --port-id PORT_ID
+    # conoha server attach-port --server-id SERVER_ID --port-id PORT_ID
     command.subcommand('server').subcommand('attach-port').add_argument(
         '--server-id', help='サーバーID', required=True
     ).add_argument(
         '--port-id', help='ポートID', required=True
     ).set_handler(nop)
 
-    # conoha sercer detach-port --server-id SERVER_ID --port-id PORT_ID
+    # conoha server detach-port --server-id SERVER_ID --port-id PORT_ID
     command.subcommand('server').subcommand('detach-port').add_argument(
         '--server-id', help='サーバーID', required=True
     ).add_argument(
