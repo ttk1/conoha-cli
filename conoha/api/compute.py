@@ -19,6 +19,7 @@ def list_flavors():
     }
     return http.get(f'{endpoint}/flavors', headers)
 
+###########################################################################
 
 def list_images():
     '''
@@ -30,6 +31,7 @@ def list_images():
     }
     return http.get(f'{endpoint}/images', headers)
 
+###########################################################################
 
 def list_servers():
     '''

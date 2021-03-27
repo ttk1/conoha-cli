@@ -51,6 +51,7 @@ def describe_network(network_id):
     }
     return http.get(f'{endpoint}/networks/{network_id}', headers)
 
+###########################################################################
 
 def create_port(network_id, ip_address,
                 subnet_id, security_group_ids=None):
@@ -111,3 +112,54 @@ def describe_port(port_id):
         'X-Auth-Token': config.get_token()['id']
     }
     return http.get(f'{endpoint}/ports/{port_id}', headers)
+
+###########################################################################
+
+def create_subnet(network_id, cidr):
+    '''
+    https://www.conoha.jp/docs/neutron-add_subnet.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    data = {
+        'subnet': {
+            'network_id': network_id,
+            'cidr': cidr
+        }
+    }
+    return http.post(f'{endpoint}/subnets', data, headers)
+
+
+def delete_subnet(subnet_id):
+    '''
+    https://www.conoha.jp/docs/neutron-remove_subnet.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    return http.delete(f'{endpoint}/subnets/{subnet_id}', headers)
+
+
+def list_subnets():
+    '''
+    https://www.conoha.jp/docs/neutron-get_subnets_list.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    return http.get(f'{endpoint}/subnets', headers)
+
+
+def describe_subnet(subnet_id):
+    '''
+    https://www.conoha.jp/docs/neutron-get_subnets_detail_specified.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    return http.get(f'{endpoint}/subnets/{subnet_id}', headers)

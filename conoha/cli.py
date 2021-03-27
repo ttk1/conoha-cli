@@ -4,6 +4,7 @@ from conoha.command import (
     flavor,
     image,
     server,
+    subnet,
     network,
     port
 )
@@ -117,17 +118,20 @@ def get_command():
         '--network-id', help='ローカルネットワークのnetwork_idを指定する', required=True
     ).add_argument(
         '--cidr', help='プライベートアドレスのみ指定できます。bitmaskは21~27の間が指定できます。', required=True
-    ).set_handler(nop)
+    ).set_handler(subnet.subnet_create)
 
     # conoha subnet delete --subnet-id SUBNET_ID
     command.subcommand('subnet').subcommand('delete').add_argument(
         '--subnet-id', help='サブネットID', required=True
-    ).set_handler(nop)
+    ).set_handler(subnet.subnet_delete)
+
+    # conoha subnet list
+    command.subcommand('subnet').subcommand('list').set_handler(subnet.subnet_list)
 
     # conoha subnet describe --subnet-id SUBNET_ID
     command.subcommand('subnet').subcommand('describe').add_argument(
         '--subnet-id', help='サブネットID', required=True
-    ).set_handler(nop)
+    ).set_handler(subnet.subnet_describe)
 
     ##################
     # security-group #
