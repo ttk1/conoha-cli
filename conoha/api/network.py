@@ -169,6 +169,62 @@ def describe_subnet(subnet_id):
 ###########################################################################
 
 
+def create_security_group(name, description=None):
+    '''
+    https://www.conoha.jp/docs/neutron-create_secgroup.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+
+    # 必須項目
+    data = {
+        'security_group': {
+            'name': name
+        }
+    }
+
+    # Optional 項目
+    if description is not None:
+        data['security_group']['description'] = description
+
+    return http.post(f'{endpoint}/security-groups', data, headers)
+
+
+def delete_security_group(security_group_id):
+    '''
+    https://www.conoha.jp/docs/neutron-delete_secgroup.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    return http.delete(f'{endpoint}/security-groups/{security_group_id}', headers)
+
+
+def list_security_groups():
+    '''
+    https://www.conoha.jp/docs/neutron-get_secgroups_list.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    return http.get(f'{endpoint}/security-groups', headers)
+
+
+def describe_security_group(security_group_id):
+    '''
+    https://www.conoha.jp/docs/neutron-get_secgroups_detail_specified.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    return http.get(f'{endpoint}/security-groups/{security_group_id}', headers)
+
+
 def list_security_group_rules():
     '''
     https://www.conoha.jp/docs/neutron-get_rules_on_secgroup.php

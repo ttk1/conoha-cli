@@ -143,20 +143,20 @@ def get_command():
         '--name', help='A symbolic name for the security group. 名前の重複はできません。', required=True
     ).add_argument(
         '--description', help='Describes the security group.'
-    ).set_handler(nop)
+    ).set_handler(security_group.security_group_create)
 
     # conoha security-group delete --group-id GROUP_ID
     command.subcommand('security-group').subcommand('delete').add_argument(
         '--security-group-id', help='セキュリティグループID', required=True
-    ).set_handler(nop)
+    ).set_handler(security_group.security_group_delete)
 
     # conoha security-group list
-    command.subcommand('security-group').subcommand('list').set_handler(nop)
+    command.subcommand('security-group').subcommand('list').set_handler(security_group.security_group_list)
 
     # conoha security-group describe --group-id GROUP_ID
     command.subcommand('security-group').subcommand('describe').add_argument(
         '--security-group-id', help='セキュリティグループID', required=True
-    ).set_handler(nop)
+    ).set_handler(security_group.security_group_describe)
 
     # conoha security-group create-rule --group-id GROUP_ID ...
     command.subcommand('security-group').subcommand('create-rule').add_argument(
