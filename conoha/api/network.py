@@ -178,3 +178,14 @@ def list_security_group_rules():
         'X-Auth-Token': config.get_token()['id']
     }
     return http.get(f'{endpoint}/security-group-rules', headers)
+
+
+def describe_security_group_rule(rule_id):
+    '''
+    https://www.conoha.jp/docs/neutron-get_rules_detail_specified.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    return http.get(f'{endpoint}/security-group-rules/{rule_id}', headers)

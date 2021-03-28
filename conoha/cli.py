@@ -189,7 +189,7 @@ def get_command():
     # conoha security-group describe-rule --rule-id RULE_ID
     command.subcommand('security-group').subcommand('describe-rule').add_argument(
         '--rule-id', help='セキュリティグループルールID', required=True
-    ).set_handler(nop)
+    ).set_handler(security_group.secutiry_group_describe_rule)
 
     ###########
     # network #
