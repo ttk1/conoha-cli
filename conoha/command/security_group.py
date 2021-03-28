@@ -32,9 +32,13 @@ def secutiry_group_create_rule(direction, ether_type, security_group_id,
                                                   remote_group_id, remote_ip_prefix))
 
 
-def secutiry_group_list_rules():
+def security_group_delete_rule(rule_id):
+    print_json(network.delete_security_group_rule(rule_id))
+
+
+def security_group_list_rules():
     print_json(network.list_security_group_rules())
 
 
-def secutiry_group_describe_rule(rule_id):
+def security_group_describe_rule(rule_id):
     print_json(network.describe_security_group_rule(rule_id))

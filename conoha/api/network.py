@@ -259,8 +259,18 @@ def create_security_group_rule(direction, ether_type, security_group_id,
     if remote_ip_prefix is not None:
         data['security_group_rule']['remote_ip_prefix'] = remote_ip_prefix
 
-    print(data)
     return http.post(f'{endpoint}/security-group-rules', data, headers)
+
+
+def delete_security_group_rule(rule_id):
+    '''
+    https://www.conoha.jp/docs/neutron-delete_rule_on_secgroup.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    return http.delete(f'{endpoint}/security-group-rules/{rule_id}', headers)
 
 
 def list_security_group_rules():
