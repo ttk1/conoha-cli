@@ -146,6 +146,7 @@ def get_command():
     ).set_handler(security_group.security_group_create)
 
     # conoha security-group delete --group-id GROUP_ID
+    # セキュリティグループを削除すると、付属するルールもまとめて削除される
     command.subcommand('security-group').subcommand('delete').add_argument(
         '--security-group-id', help='セキュリティグループID', required=True
     ).set_handler(security_group.security_group_delete)
@@ -159,6 +160,8 @@ def get_command():
     ).set_handler(security_group.security_group_describe)
 
     # conoha security-group create-rule --group-id GROUP_ID ...
+    # port-range-min と port-range-max はセットで指定すべし
+    # port-range-min,max を指定する場合は protocol (tcp,udp) もセットで指定すべし
     command.subcommand('security-group').subcommand('create-rule').add_argument(
         '--direction', choices=['ingress', 'egress'], help='セキュリティグループルールが反映される方向', required=True
     ).add_argument(
@@ -176,7 +179,7 @@ def get_command():
         '--remote-group-id', help='指定したセキュリティグループIDに紐付いたポートからのトラフィックのみを許可'
     ).add_argument(
         '--remote-ip-prefix', help='指定した prefix を持つ IP からのトラフィックのみを許可'
-    ).set_handler(nop)
+    ).set_handler(security_group.secutiry_group_create_rule)
 
     # conoha security-group delete-rule --rule-id RULE_ID
     command.subcommand('security-group').subcommand('delete-rule').add_argument(

@@ -224,6 +224,44 @@ def describe_security_group(security_group_id):
     }
     return http.get(f'{endpoint}/security-groups/{security_group_id}', headers)
 
+###########################################################################
+
+
+def create_security_group_rule(direction, ether_type, security_group_id,
+                               port_range_min=None, port_range_max=None, protocol=None,
+                               remote_group_id=None, remote_ip_prefix=None):
+    '''
+    https://www.conoha.jp/docs/neutron-create_rule_on_secgroup.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+
+    # 必須項目
+    data = {
+        'security_group_rule': {
+            'direction': direction,
+            'ethertype': ether_type,
+            'security_group_id': security_group_id
+        }
+    }
+
+    # Optional 項目
+    if port_range_min is not None:
+        data['security_group_rule']['port_range_min'] = port_range_min
+    if port_range_max is not None:
+        data['security_group_rule']['port_range_max'] = port_range_max
+    if protocol is not None:
+        data['security_group_rule']['protocol'] = protocol
+    if remote_group_id is not None:
+        data['security_group_rule']['remote_group_id'] = remote_group_id
+    if remote_ip_prefix is not None:
+        data['security_group_rule']['remote_ip_prefix'] = remote_ip_prefix
+
+    print(data)
+    return http.post(f'{endpoint}/security-group-rules', data, headers)
+
 
 def list_security_group_rules():
     '''
