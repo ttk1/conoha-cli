@@ -5,6 +5,7 @@ from conoha.command import (
     image,
     server,
     subnet,
+    security_group,
     network,
     port
 )
@@ -163,7 +164,7 @@ def get_command():
     ).add_argument(
         '--ether-type', choices=['IPv4', 'IPv6'], help='イーサタイプ', required=True
     ).add_argument(
-        '--security-group-ids', help='セキュリティグループID', required=True
+        '--security-group-id', help='セキュリティグループID', required=True
     ).add_argument(
         '--port-range-min', help='セキュリティグループルールを範囲で設定する場合の最小ポート番号'
     ).add_argument(
@@ -181,6 +182,9 @@ def get_command():
     command.subcommand('security-group').subcommand('delete-rule').add_argument(
         '--rule-id', help='セキュリティグループルールID', required=True
     ).set_handler(nop)
+
+    # conoha security-group list-rules
+    command.subcommand('security-group').subcommand('list-rules').set_handler(security_group.secutiry_group_list_rules)
 
     # conoha security-group describe-rule --rule-id RULE_ID
     command.subcommand('security-group').subcommand('describe-rule').add_argument(

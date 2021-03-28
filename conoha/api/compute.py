@@ -21,6 +21,7 @@ def list_flavors():
 
 ###########################################################################
 
+
 def list_images():
     '''
     https://www.conoha.jp/docs/compute-get_images_list.php
@@ -32,6 +33,7 @@ def list_images():
     return http.get(f'{endpoint}/images', headers)
 
 ###########################################################################
+
 
 def list_servers():
     '''
