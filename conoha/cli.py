@@ -11,10 +11,6 @@ from conoha.command import (
 )
 
 
-def nop(*args, **kwargs):
-    print('未実装！')
-
-
 def get_command():
     command = Command()
 
@@ -26,7 +22,8 @@ def get_command():
     command.subcommand('auth').subcommand('login').set_handler(auth.auth_login)
 
     # conoha auth logout
-    command.subcommand('auth').subcommand('logout').set_handler(nop)
+    # 一旦実装見送り
+    # command.subcommand('auth').subcommand('logout').set_handler(nop)
 
     ##########
     # flavor #
@@ -100,14 +97,14 @@ def get_command():
         '--server-id', help='サーバーID', required=True
     ).add_argument(
         '--port-id', help='ポートID', required=True
-    ).set_handler(nop)
+    ).set_handler(server.server_attach_port)
 
     # conoha server detach-port --server-id SERVER_ID --port-id PORT_ID
     command.subcommand('server').subcommand('detach-port').add_argument(
         '--server-id', help='サーバーID', required=True
     ).add_argument(
         '--port-id', help='ポートID', required=True
-    ).set_handler(nop)
+    ).set_handler(server.server_detach_port)
 
     ##########
     # subnet #

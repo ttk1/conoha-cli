@@ -146,3 +146,32 @@ def delete_server(server_id):
         'X-Auth-Token': config.get_token()['id']
     }
     return http.delete(f'{endpoint}/servers/{server_id}', headers)
+
+###########################################################################
+
+
+def attach_port(server_id, port_id):
+    '''
+    https://www.conoha.jp/docs/compute-attach_port.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    data = {
+        'interfaceAttachment': {
+            'port_id': port_id
+        }
+    }
+    return http.post(f'{endpoint}/servers/{server_id}​/os-interface', data, headers)
+
+
+def detach_port(server_id, port_id):
+    '''
+    https://www.conoha.jp/docs/compute-dettach_port.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    return http.delete(f'{endpoint}/servers/​{server_id}​/os-interface/​{port_id}​', headers)

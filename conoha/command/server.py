@@ -130,3 +130,13 @@ def server_delete(server_id):
     None
     '''
     print_json(compute.delete_server(server_id))
+
+###########################################################################
+
+
+def server_attach_port(server_id, port_id):
+    print_json(compute.attach_port(server_id, port_id))
+
+
+def server_detach_port(server_id, port_id):
+    print_json(compute.detach_port(server_id, port_id))
