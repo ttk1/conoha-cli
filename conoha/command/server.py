@@ -140,3 +140,7 @@ def server_attach_port(server_id, port_id):
 
 def server_detach_port(server_id, port_id):
     print_json(compute.detach_port(server_id, port_id))
+
+
+def server_list_ports(server_id):
+    print_json(compute.list_ports(server_id))

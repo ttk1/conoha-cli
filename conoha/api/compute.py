@@ -163,7 +163,7 @@ def attach_port(server_id, port_id):
             'port_id': port_id
         }
     }
-    return http.post(f'{endpoint}/servers/{server_id}​/os-interface', data, headers)
+    return http.post(f'{endpoint}/servers/{server_id}/os-interface', data, headers)
 
 
 def detach_port(server_id, port_id):
@@ -174,4 +174,15 @@ def detach_port(server_id, port_id):
         'Accept': 'application/json',
         'X-Auth-Token': config.get_token()['id']
     }
-    return http.delete(f'{endpoint}/servers/​{server_id}​/os-interface/​{port_id}​', headers)
+    return http.delete(f'{endpoint}/servers/{server_id}/os-interface/{port_id}', headers)
+
+
+def list_ports(server_id):
+    '''
+    https://www.conoha.jp/docs/compute-get_attached_ports_list.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    return http.get(f'{endpoint}/servers/{server_id}/os-interface', headers)

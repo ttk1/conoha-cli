@@ -174,10 +174,8 @@ conoha network list | jq '.networks[] | select(.shared == false)'
 
 ## port
 
-サーバーにどのポートが割り当てられているか調べるには、ポートの `device_id` を見る必要がある。
-
 ```sh
 conoha port list | jq ".ports[] | select(.device_id == \"$server_id\")"
 ```
 
-本来ならアッタッチ済みポート一覧 (https://www.conoha.jp/docs/compute-get_attached_ports_list.php) で取得可能なのだが、conoha-cli では未実装である。
+`conoha port list` で表示される `device_id` は `server_id` のこと。

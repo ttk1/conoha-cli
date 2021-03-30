@@ -106,6 +106,11 @@ def get_command():
         '--port-id', help='ポートID', required=True
     ).set_handler(server.server_detach_port)
 
+    # conoha server list-ports --server-id SERVER_ID
+    command.subcommand('server').subcommand('list-ports').add_argument(
+        '--server-id', help='サーバーID', required=True
+    ).set_handler(server.server_list_ports)
+
     ##########
     # subnet #
     ##########
