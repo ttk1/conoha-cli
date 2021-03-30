@@ -11,13 +11,7 @@ from conoha.command import (
 )
 
 
-def get_command():
-    command = Command()
-
-    ########
-    # auth #
-    ########
-
+def auth_command(command):
     # conoha auth login
     command.subcommand('auth').subcommand('login').set_handler(auth.auth_login)
 
@@ -25,24 +19,18 @@ def get_command():
     # 一旦実装見送り
     # command.subcommand('auth').subcommand('logout').set_handler(nop)
 
-    ##########
-    # flavor #
-    ##########
 
+def flavor_command(command):
     # conoha flavor list
     command.subcommand('flavor').subcommand('list').set_handler(flavor.flavor_list)
 
-    #########
-    # image #
-    #########
 
+def image_command(command):
     # conoha flavor list
     command.subcommand('image').subcommand('list').set_handler(image.image_list)
 
-    ##########
-    # server #
-    ##########
 
+def server_command(command):
     # conoha server create ...
     command.subcommand('server').subcommand('create').add_argument(
         '--image-ref', help='使用するイメージの UUID を指定', required=True
@@ -111,10 +99,8 @@ def get_command():
         '--server-id', help='サーバーID', required=True
     ).set_handler(server.server_list_ports)
 
-    ##########
-    # subnet #
-    ##########
 
+def subnet_command(command):
     # conoha subnet create ...
     command.subcommand('subnet').subcommand('create').add_argument(
         # ローカルネットワークには高々１つのサブネットしか割り当てることが出来ない
@@ -136,10 +122,8 @@ def get_command():
         '--subnet-id', help='サブネットID', required=True
     ).set_handler(subnet.subnet_describe)
 
-    ##################
-    # security-group #
-    ##################
 
+def security_group_command(command):
     # conoha security-group create ...
     command.subcommand('security-group').subcommand('create').add_argument(
         '--name', help='A symbolic name for the security group. 名前の重複はできません。', required=True
@@ -196,10 +180,8 @@ def get_command():
         '--rule-id', help='セキュリティグループルールID', required=True
     ).set_handler(security_group.security_group_describe_rule)
 
-    ###########
-    # network #
-    ###########
 
+def network_command(command):
     # conoha network create
     command.subcommand('network').subcommand('create').set_handler(network.network_create)
 
@@ -216,10 +198,8 @@ def get_command():
         '--network-id', help='ネットワークID', required=True
     ).set_handler(network.network_describe)
 
-    ########
-    # port #
-    ########
 
+def port_command(command):
     # conoha port create ...
     # とりあえず固定 IP は必須にしておく
     command.subcommand('port').subcommand('create').add_argument(
@@ -245,8 +225,15 @@ def get_command():
         '--port-id', help='ポートID', required=True
     ).set_handler(port.port_describe)
 
-    return command
-
 
 def main():
-    get_command().execute()
+    command = Command()
+    auth_command(command)
+    flavor_command(command)
+    image_command(command)
+    server_command(command)
+    subnet_command(command)
+    security_group_command(command)
+    network_command(command)
+    port_command(command)
+    command.execute()
