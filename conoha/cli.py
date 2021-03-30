@@ -1,4 +1,4 @@
-from executor import Command
+import argparse
 from conoha.command import (
     auth,
     flavor,
@@ -9,6 +9,42 @@ from conoha.command import (
     network,
     port
 )
+
+
+class Command():
+    def __init__(self, parser=None):
+        if parser is None:
+            self._parser = argparse.ArgumentParser()
+        else:
+            self._parser = parser
+
+        self.set_handler(self._parser.print_help)
+        self._subparsers = None
+        self._subcommands = {}
+
+    def subcommand(self, name):
+        if name in self._subcommands:
+            return self._subcommands[name]
+
+        if self._subparsers is None:
+            self._subparsers = self._parser.add_subparsers()
+
+        subparser = self._subparsers.add_parser(name)
+        subcommand = Command(subparser)
+        self._subcommands[name] = subcommand
+        return subcommand
+
+    def add_argument(self, *args, **kwargs):
+        self._parser.add_argument(*args, **kwargs)
+        return self
+
+    def set_handler(self, handler):
+        self._parser.set_defaults(__handler=handler)
+
+    def execute(self):
+        args = vars(self._parser.parse_args())
+        handler = args.pop('__handler')
+        handler(**args)
 
 
 def auth_command(command):
