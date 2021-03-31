@@ -6,15 +6,20 @@ from conoha.api import compute
 from conoha.util.misc import print_json
 
 
-def server_list():
+def server_list(detail):
     '''
     サーバーの一覧を JSON 形式で標準出力する。
+
+    Paramters
+    ---------
+    detail: bool
+        詳細を表示するか
 
     Returns
     -------
     None
     '''
-    print_json(compute.list_servers())
+    print_json(compute.list_servers(detail))
 
 
 def server_describe(server_id):

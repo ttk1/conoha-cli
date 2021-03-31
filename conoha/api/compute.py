@@ -35,15 +35,19 @@ def list_images():
 ###########################################################################
 
 
-def list_servers():
+def list_servers(detail):
     '''
-    https://www.conoha.jp/docs/compute-get_vms_list.php
+    通常: https://www.conoha.jp/docs/compute-get_vms_list.php
+    詳細表示: https://www.conoha.jp/docs/compute-get_vms_detail.php
     '''
     headers = {
         'Accept': 'application/json',
         'X-Auth-Token': config.get_token()['id']
     }
-    return http.get(f'{endpoint}/servers', headers)
+    if detail:
+        return http.get(f'{endpoint}/servers/detail', headers)
+    else:
+        return http.get(f'{endpoint}/servers', headers)
 
 
 def describe_server(server_id):

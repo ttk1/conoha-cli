@@ -109,7 +109,9 @@ def server_command(command):
     ).set_handler(server.server_delete)
 
     # conoha server list
-    command.subcommand('server').subcommand('list').set_handler(server.server_list)
+    command.subcommand('server').subcommand('list').add_argument(
+        '-d', '--detail', action='store_true', help='詳細を取得するか'
+    ).set_handler(server.server_list)
 
     # conha server describe --server-id SERVER_ID
     command.subcommand('server').subcommand('describe').add_argument(

@@ -179,3 +179,13 @@ conoha port list | jq ".ports[] | select(.device_id == \"$server_id\")"
 ```
 
 `conoha port list` で表示される `device_id` は `server_id` のこと。
+
+## ネームタグからサーバーを探す
+
+`conoha server list` コマンドに詳細を表示するオプション `-d` を追加した。
+
+```sh
+conoha server list -d | jq '.servers[] | select(.metadata | .instance_name_tag == "my_server")'
+```
+
+このようにすることで、サーバーの情報をネームタグから取得することが可能。
