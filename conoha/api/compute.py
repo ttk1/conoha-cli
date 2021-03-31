@@ -126,7 +126,7 @@ def start_server(server_id):
     return http.post(f'{endpoint}/servers/{server_id}/action', data, headers)
 
 
-def stop_server(server_id):
+def stop_server(server_id, force):
     '''
     通常停止: https://www.conoha.jp/docs/compute-stop_cleanly_vm.php
     強制停止: https://www.conoha.jp/docs/compute-stop_forcibly_vm.php
@@ -138,6 +138,10 @@ def stop_server(server_id):
     data = {
         'os-stop': None
     }
+    if force:
+        data['os-stop'] = {
+            'force_shutdown': True
+        }
     return http.post(f'{endpoint}/servers/{server_id}/action', data, headers)
 
 

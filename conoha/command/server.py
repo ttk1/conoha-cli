@@ -101,22 +101,22 @@ def server_start(server_id):
     print_json(compute.start_server(server_id))
 
 
-def server_stop(server_id):
+def server_stop(server_id, force):
     '''
     指定したサーバーを停止起動する。
-    現状実装されているのは通常停止のみ。
-    TODO: force パラメータを追加して強制停止を実装
 
     Paramters
     ---------
     server_id: str
         対象サーバーのID
+    force: bool
+        強制停止するか
 
     Returns
     -------
     None
     '''
-    print_json(compute.stop_server(server_id))
+    print_json(compute.stop_server(server_id, force))
 
 
 def server_delete(server_id, force):
@@ -128,7 +128,7 @@ def server_delete(server_id, force):
     server_id: str
         対象サーバーのID
     force: bool
-        削除ロックが設定してあった場合でも削除を強行する
+        削除ロックが設定してあった場合でも削除を強行するか
 
     Returns
     -------

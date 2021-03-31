@@ -101,6 +101,8 @@ def server_command(command):
     # conoha server stop --server-id SERVER_ID
     command.subcommand('server').subcommand('stop').add_argument(
         '--server-id', help='サーバーID', required=True
+    ).add_argument(
+        '-f', '--force', action='store_true', help='強制終了する'
     ).set_handler(server.server_stop)
 
     # conoha server delete --server-id SERVER_ID
