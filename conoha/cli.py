@@ -106,6 +106,8 @@ def server_command(command):
     # conoha server delete --server-id SERVER_ID
     command.subcommand('server').subcommand('delete').add_argument(
         '--server-id', help='サーバーID', required=True
+    ).add_argument(
+        '-f', '--force', action='store_true', help='削除ロックがかかっていても削除を強行する'
     ).set_handler(server.server_delete)
 
     # conoha server list

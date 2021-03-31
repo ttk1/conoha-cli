@@ -119,22 +119,22 @@ def server_stop(server_id):
     print_json(compute.stop_server(server_id))
 
 
-def server_delete(server_id):
+def server_delete(server_id, force):
     '''
     指定したサーバーを削除する。
-    WebUI で削除ロックかけてても消せるので注意。
-    TODO: 削除ロックのチェック(可能？)
 
     Paramters
     ---------
     server_id: str
         対象サーバーのID
+    force: bool
+        削除ロックが設定してあった場合でも削除を強行する
 
     Returns
     -------
     None
     '''
-    print_json(compute.delete_server(server_id))
+    print_json(compute.delete_server(server_id, force))
 
 ###########################################################################
 

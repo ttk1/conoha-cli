@@ -189,3 +189,11 @@ conoha server list -d | jq '.servers[] | select(.metadata | .instance_name_tag =
 ```
 
 このようにすることで、サーバーの情報をネームタグから取得することが可能。
+
+## 削除ロック
+
+WebUI から削除ロックを掛けた場合 `.metadata | .IsDeleteLocked` の値が `"True"` となる。
+しかし、別にシステム的に削除がロックされているわけじゃないので、API 経由なら普通に削除できてしまう。
+
+conoha-cli ではこの値をチェックして `"True"` であれば削除しないようにする。
+一方で、`--force` オプションで削除を強行することもできるようにしている。

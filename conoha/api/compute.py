@@ -141,7 +141,7 @@ def stop_server(server_id):
     return http.post(f'{endpoint}/servers/{server_id}/action', data, headers)
 
 
-def delete_server(server_id):
+def delete_server(server_id, force):
     '''
     https://www.conoha.jp/docs/compute-delete_vm.php
     '''
@@ -149,7 +149,17 @@ def delete_server(server_id):
         'Accept': 'application/json',
         'X-Auth-Token': config.get_token()['id']
     }
-    return http.delete(f'{endpoint}/servers/{server_id}', headers)
+    if force:
+        return http.delete(f'{endpoint}/servers/{server_id}', headers)
+    else:
+        is_delete_locked = (describe_server(server_id)
+                            .get('server', {})
+                            .get('metadata', {})
+                            .get('IsDeleteLocked', 'False'))
+        if is_delete_locked == 'True':
+            return 'This server has been locked for deletion.'
+        else:
+            return http.delete(f'{endpoint}/servers/{server_id}', headers)
 
 ###########################################################################
 
