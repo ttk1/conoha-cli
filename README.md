@@ -1,6 +1,6 @@
 # ConoHa CLI
 
-ConoHa API を CLI で良しなに扱うための何か。
+[ConoHa API](https://www.conoha.jp/docs/) を CLI で良しなに扱うための何か。
 
 ## 設定
 
