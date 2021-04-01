@@ -155,7 +155,17 @@ def server_delete(server_id, force):
     -------
     None
     '''
-    print_json(compute.delete_server(server_id, force))
+    if force:
+        print_json(compute.delete_server(server_id))
+    else:
+        is_delete_locked = (compute.describe_server(server_id)
+                            .get('server', {})
+                            .get('metadata', {})
+                            .get('IsDeleteLocked', 'False'))
+        if is_delete_locked == 'True':
+            print('このサーバーは削除ロックされています。')
+        else:
+            print_json(compute.delete_server(server_id))
 
 ###########################################################################
 
