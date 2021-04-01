@@ -35,21 +35,26 @@ def list_images():
 ###########################################################################
 
 
-def list_servers(detail):
+def list_servers():
     '''
     通常: https://www.conoha.jp/docs/compute-get_vms_list.php
-    詳細表示: https://www.conoha.jp/docs/compute-get_vms_detail.php
-
-    API の URL 変わるなら別に分ける？（command 側に分岐処理を持っていく？）
     '''
     headers = {
         'Accept': 'application/json',
         'X-Auth-Token': config.get_token()['id']
     }
-    if detail:
-        return http.get(f'{endpoint}/servers/detail', headers)
-    else:
-        return http.get(f'{endpoint}/servers', headers)
+    return http.get(f'{endpoint}/servers', headers)
+
+
+def list_servers_detail():
+    '''
+    詳細表示: https://www.conoha.jp/docs/compute-get_vms_detail.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    return http.get(f'{endpoint}/servers/detail', headers)
 
 
 def describe_server(server_id):

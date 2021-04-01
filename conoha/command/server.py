@@ -19,7 +19,10 @@ def server_list(detail):
     -------
     None
     '''
-    print_json(compute.list_servers(detail))
+    if detail:
+        print_json(compute.list_servers_detail())
+    else:
+        print_json(compute.list_servers())
 
 
 def server_search(keyword):
@@ -38,7 +41,7 @@ def server_search(keyword):
     print_json({
         'servers': list(filter(
             lambda x: keyword in x.get('metadata', {}).get('instance_name_tag', ''),
-            compute.list_servers(True).get('servers', [])
+            compute.list_servers_detail().get('servers', [])
         ))
     })
 
