@@ -60,9 +60,14 @@ def flavor_command(command):
     # conoha flavor list
     command.subcommand('flavor').subcommand('list').set_handler(flavor.flavor_list)
 
+    # conoha flavor search KEYWORD
+    command.subcommand('flavor').subcommand('search').add_argument(
+        'keyword', metavar='KEYWORD', help='VM プラン名の検索キーワード'
+    ).set_handler(flavor.flavor_search)
+
 
 def image_command(command):
-    # conoha flavor list
+    # conoha image list
     command.subcommand('image').subcommand('list').set_handler(image.image_list)
 
 
