@@ -119,8 +119,8 @@ conoha flavor list | jq -r '.flavors[] | select(.name | test("512")) | .id, .nam
 この二つは
 
 ```sh
-conoha image list
-conoha flavor list
+conoha image search KEYWORD
+conoha flavor search KEYWORD
 ```
 
 で調べることが出来る。
@@ -133,19 +133,18 @@ conoha flavor list
 のものを探してみる。
 
 ```sh
-# ubuntu-20.04 を名前に含む image を抽出
-conoha image list | jq '.images[] | select(.name | test("ubuntu-20.04")) | .name, .id'
+# vmi-ubuntu-20.04 を名前に含む image を抽出
+# ※ ubuntu-20.04 だけだと ubuntu-20.04 ベースの色々なイメージも引っかかるので vmi を先頭に付ける
+conoha image search vmi-ubuntu-20.04
 
 # m512 を名前に含む flavor を抽出
-conoha flavor list | jq '.flavors[] | select(.name | test("m512")) | .name, .id'
+conoha flavor search m512
 ```
-
-多分
 
 * image name: vmi-ubuntu-20.04.02-amd64-30gb
 * flavor name: g-c1m512d30
 
-のやつが求めているものだろう。
+この二つが求めているものだろう。
 
 早速サーバーを立ち上げてみる。
 

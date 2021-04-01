@@ -12,8 +12,7 @@ def flavor_list():
 
 def flavor_search(keyword):
     print_json({
-        'flavors':
-        list(filter(
+        'flavors': list(filter(
             lambda x: keyword in x.get('name'),
             compute.list_flavors().get('flavors', [])
         ))

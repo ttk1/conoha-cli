@@ -62,13 +62,18 @@ def flavor_command(command):
 
     # conoha flavor search KEYWORD
     command.subcommand('flavor').subcommand('search').add_argument(
-        'keyword', metavar='KEYWORD', help='VM プラン名の検索キーワード'
+        'keyword', metavar='KEYWORD', help='VM プラン名の検索キーワード(部分一致)'
     ).set_handler(flavor.flavor_search)
 
 
 def image_command(command):
     # conoha image list
     command.subcommand('image').subcommand('list').set_handler(image.image_list)
+
+    # conoha image search
+    command.subcommand('image').subcommand('search').add_argument(
+       'keyword', metavar='KEYWORD', help='イメージ名の検索キーワード(部分一致)'
+    ).set_handler(image.image_search)
 
 
 def server_command(command):
