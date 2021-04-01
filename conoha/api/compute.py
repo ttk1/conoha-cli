@@ -39,6 +39,8 @@ def list_servers(detail):
     '''
     通常: https://www.conoha.jp/docs/compute-get_vms_list.php
     詳細表示: https://www.conoha.jp/docs/compute-get_vms_detail.php
+
+    API の URL 変わるなら別に分ける？（command 側に分岐処理を持っていく？）
     '''
     headers = {
         'Accept': 'application/json',

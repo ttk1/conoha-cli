@@ -13,7 +13,7 @@ def image_list():
 def image_search(keyword):
     print_json({
         'images': list(filter(
-            lambda x: keyword in x.get('name'),
+            lambda x: keyword in x.get('name', ''),
             compute.list_images().get('images', [])
         ))
     })

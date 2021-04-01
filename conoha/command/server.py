@@ -22,6 +22,27 @@ def server_list(detail):
     print_json(compute.list_servers(detail))
 
 
+def server_search(keyword):
+    '''
+    ネームタグをキーワード検索してヒットしたサーバーの詳細を表示する。
+
+    Paramters
+    ---------
+    keyword: str
+        検索キーワード
+
+    Returns
+    -------
+    None
+    '''
+    print_json({
+        'servers': list(filter(
+            lambda x: keyword in x.get('metadata', {}).get('instance_name_tag', ''),
+            compute.list_servers(True).get('servers', [])
+        ))
+    })
+
+
 def server_describe(server_id):
     '''
     指定したサーバーの情報を JSON 形式で標準出力する。

@@ -72,7 +72,7 @@ def image_command(command):
 
     # conoha image search
     command.subcommand('image').subcommand('search').add_argument(
-       'keyword', metavar='KEYWORD', help='イメージ名の検索キーワード(部分一致)'
+        'keyword', metavar='KEYWORD', help='イメージ名の検索キーワード(部分一致)'
     ).set_handler(image.image_search)
 
 
@@ -126,6 +126,11 @@ def server_command(command):
     command.subcommand('server').subcommand('list').add_argument(
         '-d', '--detail', action='store_true', help='詳細を取得するか'
     ).set_handler(server.server_list)
+
+    # conoha server search KEYWORD
+    command.subcommand('server').subcommand('search').add_argument(
+        'keyword', metavar='KEYWORD', help='ネームタグの検索キーワード(部分一致)'
+    ).set_handler(server.server_search)
 
     # conha server describe --server-id SERVER_ID
     command.subcommand('server').subcommand('describe').add_argument(
