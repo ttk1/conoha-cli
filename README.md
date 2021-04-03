@@ -2,7 +2,7 @@
 
 [ConoHa API](https://www.conoha.jp/docs/) を CLI で良しなに扱うための何か。
 
-## 設定
+## 設定ファイル
 
 ### `~/.conoha/config.json`
 
@@ -17,9 +17,9 @@
 ```
 
 * エンドポイントの設定等をとりあえずここに入れておく
-* **今は手動で作成する**ようになっているが、今後は API から自動で取得するようにしたい
-* 現状実装済みなのは `identity`, `compute`, `network` の三つのみ
-* とりあえず、バージョンのパスまで含める形式で
+* ConoHa のコンソール画面に表示されているものから手で作成する
+* `identity`, `compute`, `network` の３つが必要
+* バージョンのパスまで含める
 
 ### `~/.conoha/credential.json`
 
@@ -37,12 +37,13 @@
 
 ```json
 {
-  "id": "hogehgoefugafuga",
+  "id": "{token_id}",
   "expires": "2099-09-19T09:09:09Z"
 }
 ```
 
 * `conoha auth login` マンド実行時に自動で作成
+* `expires` は今のところ使ってない
 
 ## login
 
