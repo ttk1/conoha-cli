@@ -31,7 +31,8 @@
 }
 ```
 
-* 設定が無ければプロンプトで入力を求める
+* 設定が無ければ `conoha auth login` コマンド実行時にプロンプトで入力を求める
+* 入力された内容を `credential.json` に保存する
 
 ### `~/.conoha/token.json`
 
@@ -44,16 +45,6 @@
 
 * `conoha auth login` マンド実行時に自動で作成
 * `expires` は今のところ使ってない
-
-## login
-
-`token.json` が存在しない、またはトークンの有効期限が切れている場合、認証に失敗する。
-
-次のコマンドで `token.json` を再作成することが出来る。
-
-```sh
-conoha auth login
-```
 
 ## flavor 名について
 

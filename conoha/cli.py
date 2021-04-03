@@ -22,14 +22,14 @@ class Command():
         self._subparsers = None
         self._subcommands = {}
 
-    def subcommand(self, name):
+    def subcommand(self, name=None, description=None):
         if name in self._subcommands:
             return self._subcommands[name]
 
         if self._subparsers is None:
             self._subparsers = self._parser.add_subparsers()
 
-        subparser = self._subparsers.add_parser(name)
+        subparser = self._subparsers.add_parser(name=name, description=description)
         subcommand = Command(subparser)
         self._subcommands[name] = subcommand
         return subcommand
@@ -49,7 +49,10 @@ class Command():
 
 def auth_command(command):
     # conoha auth login
-    command.subcommand('auth').subcommand('login').set_handler(auth.auth_login)
+    command.subcommand(name='auth').subcommand(
+        name='login',
+        description='API トークンを取得して token.json に保存する'
+    ).set_handler(auth.auth_login)
 
     # conoha auth logout
     # 一旦実装見送り
@@ -58,17 +61,26 @@ def auth_command(command):
 
 def flavor_command(command):
     # conoha flavor list
-    command.subcommand('flavor').subcommand('list').set_handler(flavor.flavor_list)
+    command.subcommand(name='flavor').subcommand(
+        name='list',
+        description='VM プランの一覧を表示する'
+    ).set_handler(flavor.flavor_list)
 
     # conoha flavor search KEYWORD
-    command.subcommand('flavor').subcommand('search').add_argument(
+    command.subcommand(name='flavor').subcommand(
+        name='search',
+        description='VM プランをプラン名の部分一致で検索する'
+    ).add_argument(
         'keyword', metavar='KEYWORD', help='VM プラン名の検索キーワード(部分一致)'
     ).set_handler(flavor.flavor_search)
 
 
 def image_command(command):
     # conoha image list
-    command.subcommand('image').subcommand('list').set_handler(image.image_list)
+    command.subcommand(name='image').subcommand(
+        name='list',
+        description='イメージの一覧を表示する'
+    ).set_handler(image.image_list)
 
     # conoha image search
     command.subcommand('image').subcommand('search').add_argument(
@@ -78,7 +90,10 @@ def image_command(command):
 
 def server_command(command):
     # conoha server create ...
-    command.subcommand('server').subcommand('create').add_argument(
+    command.subcommand(name='server').subcommand(
+        name='create',
+        description='VM を作成する'
+    ).add_argument(
         '--image-ref', help='使用するイメージの UUID を指定', required=True
     ).add_argument(
         '--flavor-ref', help='VM プラン（flavor）の UUID を指定', required=True
@@ -104,62 +119,92 @@ def server_command(command):
     ).set_handler(server.server_create)
 
     # conoha server start --server-id SERVER_ID
-    command.subcommand('server').subcommand('start').add_argument(
+    command.subcommand(name='server').subcommand(
+        name='start',
+        description='VM を起動する'
+    ).add_argument(
         '--server-id', help='サーバーID', required=True
     ).set_handler(server.server_start)
 
     # conoha server stop --server-id SERVER_ID
-    command.subcommand('server').subcommand('stop').add_argument(
+    command.subcommand(name='server').subcommand(
+        name='stop',
+        description='VM を停止する'
+    ).add_argument(
         '--server-id', help='サーバーID', required=True
     ).add_argument(
         '-f', '--force', action='store_true', help='強制終了する'
     ).set_handler(server.server_stop)
 
     # conoha server delete --server-id SERVER_ID
-    command.subcommand('server').subcommand('delete').add_argument(
+    command.subcommand(name='server').subcommand(
+        name='delete',
+        description='VM を削除する'
+    ).add_argument(
         '--server-id', help='サーバーID', required=True
     ).add_argument(
         '-f', '--force', action='store_true', help='削除ロックがかかっていても削除を強行する'
     ).set_handler(server.server_delete)
 
     # conoha server list
-    command.subcommand('server').subcommand('list').add_argument(
+    command.subcommand(name='server').subcommand(
+        name='list',
+        description='VM の一覧を表示する'
+    ).add_argument(
         '-d', '--detail', action='store_true', help='詳細を取得するか'
     ).set_handler(server.server_list)
 
     # conoha server search KEYWORD
-    command.subcommand('server').subcommand('search').add_argument(
+    command.subcommand(name='server').subcommand(
+        name='search',
+        description='VM をネームタグ名の部分一致で検索する'
+    ).add_argument(
         'keyword', metavar='KEYWORD', help='ネームタグの検索キーワード(部分一致)'
     ).set_handler(server.server_search)
 
     # conha server describe --server-id SERVER_ID
-    command.subcommand('server').subcommand('describe').add_argument(
+    command.subcommand(name='server').subcommand(
+        name='describe',
+        description='VM の詳細を表示する'
+    ).add_argument(
         '--server-id', help='サーバーID', required=True
     ).set_handler(server.server_describe)
 
     # conoha server attach-port --server-id SERVER_ID --port-id PORT_ID
-    command.subcommand('server').subcommand('attach-port').add_argument(
+    command.subcommand(name='server').subcommand(
+        name='attach-port',
+        description='VM にポートをアタッチする'
+    ).add_argument(
         '--server-id', help='サーバーID', required=True
     ).add_argument(
         '--port-id', help='ポートID', required=True
     ).set_handler(server.server_attach_port)
 
     # conoha server detach-port --server-id SERVER_ID --port-id PORT_ID
-    command.subcommand('server').subcommand('detach-port').add_argument(
+    command.subcommand(name='server').subcommand(
+        name='detach-port',
+        description='VM からポートをでタッチする'
+    ).add_argument(
         '--server-id', help='サーバーID', required=True
     ).add_argument(
         '--port-id', help='ポートID', required=True
     ).set_handler(server.server_detach_port)
 
     # conoha server list-ports --server-id SERVER_ID
-    command.subcommand('server').subcommand('list-ports').add_argument(
+    command.subcommand(name='server').subcommand(
+        name='list-ports',
+        description='VM にアタッチされているポートの一覧を表示する'
+    ).add_argument(
         '--server-id', help='サーバーID', required=True
     ).set_handler(server.server_list_ports)
 
 
 def subnet_command(command):
     # conoha subnet create ...
-    command.subcommand('subnet').subcommand('create').add_argument(
+    command.subcommand(name='subnet').subcommand(
+        name='create',
+        description='サブネットを作成する'
+    ).add_argument(
         # ローカルネットワークには高々１つのサブネットしか割り当てることが出来ない
         '--network-id', help='ローカルネットワークのnetwork_idを指定する', required=True
     ).add_argument(
@@ -167,45 +212,70 @@ def subnet_command(command):
     ).set_handler(subnet.subnet_create)
 
     # conoha subnet delete --subnet-id SUBNET_ID
-    command.subcommand('subnet').subcommand('delete').add_argument(
+    command.subcommand(name='subnet').subcommand(
+        name='delete',
+        description='サブネットを削除する'
+    ).add_argument(
         '--subnet-id', help='サブネットID', required=True
     ).set_handler(subnet.subnet_delete)
 
     # conoha subnet list
-    command.subcommand('subnet').subcommand('list').set_handler(subnet.subnet_list)
+    command.subcommand(name='subnet').subcommand(
+        name='list',
+        description='サブネットの一覧を表示する'
+    ).set_handler(subnet.subnet_list)
 
     # conoha subnet describe --subnet-id SUBNET_ID
-    command.subcommand('subnet').subcommand('describe').add_argument(
+    command.subcommand(name='subnet').subcommand(
+        name='describe',
+        description='サブネットの詳細を表示する'
+    ).add_argument(
         '--subnet-id', help='サブネットID', required=True
     ).set_handler(subnet.subnet_describe)
 
 
 def security_group_command(command):
     # conoha security-group create ...
-    command.subcommand('security-group').subcommand('create').add_argument(
+    command.subcommand(name='security-group').subcommand(
+        name='create',
+        description='セキュリティグループを作成する'
+    ).add_argument(
         '--name', help='A symbolic name for the security group. 名前の重複はできません。', required=True
     ).add_argument(
         '--description', help='Describes the security group.'
     ).set_handler(security_group.security_group_create)
 
     # conoha security-group delete --group-id GROUP_ID
-    # セキュリティグループを削除すると、付属するルールもまとめて削除される
-    command.subcommand('security-group').subcommand('delete').add_argument(
+    command.subcommand(name='security-group').subcommand(
+        name='delete',
+        description='セキュリティグループを削除する。付属するルールもまとめて削除される。'
+    ).add_argument(
         '--security-group-id', help='セキュリティグループID', required=True
     ).set_handler(security_group.security_group_delete)
 
     # conoha security-group list
-    command.subcommand('security-group').subcommand('list').set_handler(security_group.security_group_list)
+    command.subcommand(name='security-group').subcommand(
+        name='list',
+        description='セキュリティグループの一覧を表示する'
+    ).set_handler(security_group.security_group_list)
 
     # conoha security-group describe --group-id GROUP_ID
-    command.subcommand('security-group').subcommand('describe').add_argument(
+    command.subcommand(name='security-group').subcommand(
+        name='describe',
+        description='セキュリティグループの詳細を表示する'
+    ).add_argument(
         '--security-group-id', help='セキュリティグループID', required=True
     ).set_handler(security_group.security_group_describe)
 
     # conoha security-group create-rule --group-id GROUP_ID ...
     # port-range-min と port-range-max はセットで指定すべし
     # port-range-min,max を指定する場合は protocol (tcp,udp) もセットで指定すべし
-    command.subcommand('security-group').subcommand('create-rule').add_argument(
+    command.subcommand(name='security-group').subcommand(
+        name='create-rule',
+        description=('セキュリティグループのルールを作成する。'
+                     'port-range-min と port-range-max はセットで指定する必要がある。'
+                     'port-range を指定する場合は protocol もセットで指定する必要がある。')
+    ).add_argument(
         '--direction', choices=['ingress', 'egress'], help='セキュリティグループルールが反映される方向', required=True
     ).add_argument(
         '--ether-type', choices=['IPv4', 'IPv6'], help='イーサタイプ', required=True
@@ -225,41 +295,64 @@ def security_group_command(command):
     ).set_handler(security_group.secutiry_group_create_rule)
 
     # conoha security-group delete-rule --rule-id RULE_ID
-    command.subcommand('security-group').subcommand('delete-rule').add_argument(
+    command.subcommand(name='security-group').subcommand(
+        name='delete-rule',
+        description='セキュリティグループルールを削除する'
+    ).add_argument(
         '--rule-id', help='セキュリティグループルールID', required=True
     ).set_handler(security_group.security_group_delete_rule)
 
     # conoha security-group list-rules
-    command.subcommand('security-group').subcommand('list-rules').set_handler(security_group.security_group_list_rules)
+    command.subcommand(name='security-group').subcommand(
+        name='list-rules',
+        description='セキュリティグループルールの一覧を表示する'
+    ).set_handler(security_group.security_group_list_rules)
 
     # conoha security-group describe-rule --rule-id RULE_ID
-    command.subcommand('security-group').subcommand('describe-rule').add_argument(
+    command.subcommand(name='security-group').subcommand(
+        name='describe-rule',
+        description='セキュリティグループの詳細を表示する'
+    ).add_argument(
         '--rule-id', help='セキュリティグループルールID', required=True
     ).set_handler(security_group.security_group_describe_rule)
 
 
 def network_command(command):
     # conoha network create
-    command.subcommand('network').subcommand('create').set_handler(network.network_create)
+    command.subcommand(name='network').subcommand(
+        name='create',
+        description='ローカル通信用ネットワークを作成する'
+    ).set_handler(network.network_create)
 
     # conoha network delete --network-id NETWORK_ID
-    command.subcommand('network').subcommand('delete').add_argument(
+    command.subcommand(name='network').subcommand(
+        name='delete',
+        description='ネットワークを削除する'
+    ).add_argument(
         '--network-id', help='ネットワークID', required=True
     ).set_handler(network.network_delete)
 
     # conoha network list
-    command.subcommand('network').subcommand('list').set_handler(network.network_list)
+    command.subcommand(name='network').subcommand(
+        name='list',
+        description='ネットワークの一覧を表示する'
+    ).set_handler(network.network_list)
 
     # conoha network describe --network-id NETWORK_ID
-    command.subcommand('network').subcommand('describe').add_argument(
+    command.subcommand(name='network').subcommand(
+        name='describe',
+        description='ネットワークの詳細を表示する'
+    ).add_argument(
         '--network-id', help='ネットワークID', required=True
     ).set_handler(network.network_describe)
 
 
 def port_command(command):
     # conoha port create ...
-    # とりあえず固定 IP は必須にしておく
-    command.subcommand('port').subcommand('create').add_argument(
+    command.subcommand(name='port').subcommand(
+        name='create',
+        description='ポートを作成する。固定 IP は必須。'
+    ).add_argument(
         '--network-id', help='ネットワークID', required=True
     ).add_argument(
         '--ip-address', help='IPアドレス(IPv4, IPv6)', required=True
@@ -270,15 +363,24 @@ def port_command(command):
     ).set_handler(port.port_create)
 
     # conoha port delete --port-id PORT_ID
-    command.subcommand('port').subcommand('delete').add_argument(
+    command.subcommand(name='port').subcommand(
+        name='delete',
+        description='ポートを削除する'
+    ).add_argument(
         '--port-id', help='ポートID', required=True
     ).set_handler(port.port_delete)
 
     # conoha port list
-    command.subcommand('port').subcommand('list').set_handler(port.port_list)
+    command.subcommand(name='port').subcommand(
+        name='list',
+        description='ポートの一覧を表示する'
+    ).set_handler(port.port_list)
 
     # conoha port describe --port-id PORT_ID
-    command.subcommand('port').subcommand('describe').add_argument(
+    command.subcommand(name='port').subcommand(
+        name='describe',
+        description='ポートの詳細を表示する'
+    ).add_argument(
         '--port-id', help='ポートID', required=True
     ).set_handler(port.port_describe)
 
