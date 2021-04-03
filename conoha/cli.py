@@ -268,8 +268,6 @@ def security_group_command(command):
     ).set_handler(security_group.security_group_describe)
 
     # conoha security-group create-rule --group-id GROUP_ID ...
-    # port-range-min と port-range-max はセットで指定すべし
-    # port-range-min,max を指定する場合は protocol (tcp,udp) もセットで指定すべし
     command.subcommand(name='security-group').subcommand(
         name='create-rule',
         description=('セキュリティグループのルールを作成する。'
@@ -336,6 +334,8 @@ def network_command(command):
     command.subcommand(name='network').subcommand(
         name='list',
         description='ネットワークの一覧を表示する'
+    ).add_argument(
+        '-l', '--local-only', action='store_true', help='ローカルネットワークのみを表示する'
     ).set_handler(network.network_list)
 
     # conoha network describe --network-id NETWORK_ID

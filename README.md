@@ -151,17 +151,17 @@ conoha server create \
 
 ## network
 
-プライベートネットワークのみを取得したい場合、`shared` が `false` なものを選ぶと良い。
+ローカルネットワークのみを取得したい場合、名前が `local` で始まるものだけを取り出すとよさそう。
+`conoha netowork list` で `--local-only` もしくは `-l` オプションを指定すると、ローカルネットワークのみを表示する。
 
 ```sh
-conoha network list | jq '.networks[] | select(.shared == false)'
+conoha network list --local-only
 ```
 
 * ネットワークは作成したままだと、ConoHa コンソール上で表示されないみたいなので、サブネットを作成する必要がある
 * サブネットは一つのネットワークにつき１つまでしか設定できない
 * プライベートネットワークは１つのアカウントにつき 10 個まで作成できる
 * ConoHa コンソール上で表示されるのはサブネットの方の ID なので注意
-
 
 ## port
 
