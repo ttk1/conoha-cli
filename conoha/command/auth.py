@@ -17,23 +17,13 @@ def auth_login():
             'tenant_id': input('Enter tenant id: ')
         }
         config.save_credential(credential)
-
-    # これは API の方で記述すべし
-    data = {
-        'auth': {
-            'passwordCredentials': {
-                'username': credential['user_name'],
-                'password': credential['password']
-            },
-            'tenantId': credential['tenant_id']
-        }
-    }
-    res = identity.get_token(data)
-    token = {
+    res = identity.get_token(credential['user_name'],
+                             credential['password'],
+                             credential['tenant_id'])
+    config.save_token({
         'id': res["access"]["token"]["id"],
         'expires': res["access"]["token"]["expires"]
-    }
-    config.save_token(token)
+    })
 
 
 def auth_logout():
