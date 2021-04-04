@@ -171,6 +171,11 @@ conoha port list | jq ".ports[] | select(.device_id == \"$server_id\")"
 
 `conoha port list` で表示される `device_id` は `server_id` のこと。
 
+インスタンスを削除した場合、インスタンスに紐付いているポートも一緒に削除されるので注意。
+
+また `detach-port` でもポートは削除されるっぽい。
+ポートは使い捨てな模様。
+
 ## ネームタグからサーバーを探す
 
 `conoha server list` コマンドに詳細を表示するオプション `-d` を追加した。
