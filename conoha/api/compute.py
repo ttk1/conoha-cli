@@ -112,7 +112,6 @@ def create_server(image_ref, flavor_ref,
         data['server']['vncKeymap'] = vnc_keymap
     if user_data is not None:
         # 生の文字列を BASE64 エンコードに変換する
-        # TODO: ちゃんと動くか確認してない
         data['server']['user_data'] = base64.b64encode(
             user_data.encode(encoding='utf-8')
         ).decode(encoding='utf-8')
