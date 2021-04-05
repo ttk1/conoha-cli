@@ -16,10 +16,9 @@
 }
 ```
 
-* エンドポイントの設定等をとりあえずここに入れておく
-* ConoHa のコンソール画面に表示されているものから手で作成する
-* `identity`, `compute`, `network` の３つが必要
-* バージョンのパスまで含める
+エンドポイントの設定をここに記述します。
+ConoHa のコンソール画面に表示されているものを使って作成してください。
+`identity`, `compute`, `network` の３つが必要です。
 
 ### `~/.conoha/credential.json`
 
@@ -31,8 +30,9 @@
 }
 ```
 
-* 設定が無ければ `conoha auth login` コマンド実行時にプロンプトで入力を求める
-* 入力された内容を `credential.json` に保存する
+API ユーザのユーザ名・パスワードとテナント ID をここに記述します。
+ファイルが無ければ `conoha auth login` コマンド実行時に入力を求められます。
+入力された内容は `credential.json` に保存されます。
 
 ### `~/.conoha/token.json`
 
@@ -43,153 +43,136 @@
 }
 ```
 
-* `conoha auth login` マンド実行時に自動で作成
-* `expires` は今のところ使ってない
+`conoha auth login` マンド実行時に自動で作成されます。
+ここに保存されたトークンを使って API の呼び出しが行われることになります。
+`expires` は今のところ使っていません。
 
-## flavor 名について
+## コマンド
 
-* `g-cXmYdZ`
-  * 例: `g-c2m1d100`
-* `g-Xgb`
-  * 例: `g-2gb`
+```
+$ conoha -h
+usage: conoha [-h] {auth,flavor,image,server,subnet,security-group,network,port} ...
 
-上記の両パターンがある。
+positional arguments:
+  {auth,flavor,image,server,subnet,security-group,network,port}
 
-`g-cXmYdZ` の方は新プランのやつで、`X` はコア数、`Y` はメモリサイズ（GB）、`Z` はストレージサイズ（GB）を表していると思われる。
-
-`g-Xgb` の方は旧プランのやつで、`X` はメモリーのサイズ（GB）を表していると思われる。
-
-
-## jq
-
-レスポンスが JSON 形式なので jq コマンドを活用する。
-
-Windows OS の場合 Windows 版の jq コマンドを導入しても良いが、wsl があればそれでも良い。
-
-### 基本
-
-```sh
-# 通常時
-jq < hoge.json
-
-# wsl 使用時はエイリアスを設定すると良い
-alias jq='wsl jq'
-
-# ダブルクオート無しで結果を表示する
-jq -w < hoge.json
+optional arguments:
+  -h, --help            show this help message and exit
 ```
 
-### 特定フィールドの絞り込み
+各コマンドのオプションに `-h` を指定することで、コマンドの説明を表示することが出来ます。
+
+## 使用例
+
+メモリ 512 MB プランで Ubuntu 20.04 イメージを使ってサーバーを作成してみます。
+
+デフォルトのセキュリティグループだと SSH 接続ができないので、
+あらかじめ SSH 接続用のルールを追加したセキュリティグループを作成しておきます。
+
+`conoha image search` と `conoha flavor search` で目的のイメージとプランの ID を探し、
+それを使い `conoha server create` でサーバーを作成します。
 
 ```sh
-# id のみ
-conoha flavor list | jq -r .flavors[].id
+# セキュリティグループの作成
+sg_id=$(
+  conoha security-group create \
+    --name 'test-sg' |
+  jq -r '.security_group | .id'
+)
 
-# id, name の順に交互に表示
-conoha flavor list | jq -r '.flavors[] | .id, .name'
+# SSH 接続用のルールを追加
+conoha security-group create-rule \
+  --direction ingress \
+  --ether-type IPv4 \
+  --security-group-id "$sg_id" \
+  --port-range-min 22 \
+  --port-range-max 22 \
+  --protocol tcp
 
-# [id, name] の形式で表示
-conoha flavor list | jq -r '.flavors[] | [.id, .name]'
+# イメージとプランの ID を取得
+image_ref=$(
+  conoha image search 'vmi-ubuntu-20.04-amd64-30gb' |
+  jq -r '.images[0] | .id'
+)
+flavor_ref=$(
+  conoha flavor search 'g-c1m512d30' |
+  jq -r '.flavors[0] | .id'
+)
 
-# {"id": id, "name": name} の形式で表示
-conoha flavor list | jq -r '.flavors[] | {id, name}'
-```
-
-### 条件で絞り込み
-
-```sh
-# name の完全一致
-conoha flavor list | jq -r '.flavors[] | select(.name == "g-4gb") | .id, .name'
-
-# 正規表現
-conoha flavor list | jq -r '.flavors[] | select(.name | test("512")) | .id, .name'
-```
-
-## server create
-
-サーバーの作成には `image_ref` と `flavor_ref` の二つが必要になる。
-この二つは
-
-```sh
-conoha image search KEYWORD
-conoha flavor search KEYWORD
-```
-
-で調べることが出来る。
-
-ここでは
-
-* イメージ: ubuntu 20.04
-* プラン: メモリ512MB
-
-のものを探してみる。
-
-```sh
-# vmi-ubuntu-20.04 を名前に含む image を抽出
-# ※ ubuntu-20.04 だけだと ubuntu-20.04 ベースの色々なイメージも引っかかるので vmi を先頭に付ける
-conoha image search vmi-ubuntu-20.04
-
-# m512 を名前に含む flavor を抽出
-conoha flavor search m512
-```
-
-* image name: vmi-ubuntu-20.04.02-amd64-30gb
-* flavor name: g-c1m512d30
-
-この二つが求めているものだろう。
-
-早速サーバーを立ち上げてみる。
-
-```sh
+# サーバーの作成
 conoha server create \
-  --image-ref '上で確認した image_id' \
-  --flavor-ref '上で確認した flavor_id' \
-  --instance-name-tag '分かりやすい名前を付ける'
+  --image-ref "$image_ref" \
+  --flavor-ref "$flavor_ref" \
+  --security-groups 'test-sg' \
+  --instance-name-tag 'test-server'
 ```
 
-コマンドのレスポンスに `adminPass` が含まれるので、忘れないようにメモする（ログイン後変更すべし！）。
+## 作成できるリソースの上限
 
-## network
+* サブネットは 1 つのローカルネットワークにつき 1 つまでしか作成できない
+* ローカルネットワーク（プライベートネットワーク）は 1 つのアカウントにつき 10 個まで作成できる
+* ローカルネットワークのポートは 1 つのサーバーに 2 つまでアタッチできる
+* セキュリティグループは一つのアカウントにつき 50 個まで作成できる
 
-ローカルネットワークのみを取得したい場合、名前が `local` で始まるものだけを取り出すとよさそう。
-`conoha netowork list` で `--local-only` もしくは `-l` オプションを指定すると、ローカルネットワークのみを表示する。
+## 使っていないリソースを見つける
+
+コンソールからは見ることが出来ないリソースがあるため、うっかりしていると削除し忘れたままになってしまいます。
+
+ここではそういったリソースを見つける方法を紹介します。
+
+### 使っていないローカルネットワークを見つける
+
+ローカルネットの一覧は `conoha network list -l` で取得出来ます。
+この中からサブネットが作成されていないものを取り出せば良いでしょう。
 
 ```sh
-conoha network list --local-only
+conoha network list -l |
+jq -r '.networks[] | select(.subnets | length == 0)'
 ```
 
-* ネットワークは作成したままだと、ConoHa コンソール上で表示されないみたいなので、サブネットを作成する必要がある
-* サブネットは一つのネットワークにつき１つまでしか設定できない
-* プライベートネットワークは１つのアカウントにつき 10 個まで作成できる
-* ConoHa コンソール上で表示されるのはサブネットの方の ID なので注意
+### 使っていないローカルサブネットを見つける
 
-## port
+コンソール上でどのサーバーとも接続していないプライベートネットワークがあれば、
+それは使われていないローカルサブネットです。
+
+### 使っていないポートを見つける
+
+ポートの一覧は `conoha port list` 出来ます。
+`device_id` が空（`""`）のポートがあれば、それは使われていないポートです。
 
 ```sh
-conoha port list | jq ".ports[] | select(.device_id == \"$server_id\")"
+conoha port list | jq -r '.ports[] | select(.device_id == "")'
 ```
 
-`conoha port list` で表示される `device_id` は `server_id` のこと。
+### 使っていないセキュリティグループを見つける
 
-インスタンスを削除した場合、インスタンスに紐付いているポートも一緒に削除されるので注意。
-
-また `detach-port` でもポートは削除されるっぽい。
-ポートは使い捨てな模様。
-
-## ネームタグからサーバーを探す
-
-`conoha server list` コマンドに詳細を表示するオプション `-d` を追加した。
+ポートにアタッチされているセキュリティグループの ID の一覧は次のコマンドで調べることが出来ます。
 
 ```sh
-conoha server list -d | jq '.servers[] | select(.metadata | .instance_name_tag == "my_server")'
+conoha port list | jq -r '.ports[] | .security_groups[]' | sort | uniq
 ```
 
-このようにすることで、サーバーの情報をネームタグから取得することが可能。
+またセキュリティグループの ID の一覧は次のコマンドで調べることが出来ます。
 
-## 削除ロック
+```sh
+conoha security-group list | jq -r '.security_groups[] | .id'
+```
 
-WebUI から削除ロックを掛けた場合 `.metadata | .IsDeleteLocked` の値が `"True"` となる。
-しかし、別にシステム的に削除がロックされているわけじゃないので、API 経由なら普通に削除できてしまう。
+二つのコマンドの結果を比較すると良いでしょう。
 
-conoha-cli ではこの値をチェックして `"True"` であれば削除しないようにする。
-一方で、`--force` オプションで削除を強行することもできるようにしている。
+```sh
+diff <(
+  conoha port list |
+  jq -r '.ports[] | .security_groups[]' |
+  sort | uniq
+) <(
+  conoha security-group list |
+  jq -r '.security_groups[] | .id' |
+  sort
+)
+```
+
+## 免責事項
+
+このツールを使ったことによって生じた結果について、いかなる責任も負いません。
+ご使用は自己責任でお願いします。
