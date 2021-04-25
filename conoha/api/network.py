@@ -252,7 +252,7 @@ def create_security_group_rule(direction, ether_type, security_group_id,
         data['security_group_rule']['port_range_min'] = port_range_min
     if port_range_max is not None:
         data['security_group_rule']['port_range_max'] = port_range_max
-    if protocol is not None:
+    if protocol is not None and protocol != 'null':
         data['security_group_rule']['protocol'] = protocol
     if remote_group_id is not None:
         data['security_group_rule']['remote_group_id'] = remote_group_id
