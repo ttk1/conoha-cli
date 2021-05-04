@@ -362,6 +362,16 @@ def port_command(command):
         '--security-group-ids', nargs='+', help='指定がない場合はDefaultのセキュリティグループが設定される'
     ).set_handler(port.port_create)
 
+    # conoha port update --port-id PORT_ID --security-group-ids ...
+    command.subcommand(name='port').subcommand(
+        name='update',
+        description='ポートのセキュリティグループを更新する（IP アドレスの更新は未実装）'
+    ).add_argument(
+        '--port-id', help='ポートID', required=True
+    ).add_argument(
+        '--security-group-ids', nargs='*', metavar='SECURITY_GROUP_ID', help='セキュリティグループID のリスト', required=True
+    ).set_handler(port.port_update)
+
     # conoha port delete --port-id PORT_ID
     command.subcommand(name='port').subcommand(
         name='delete',

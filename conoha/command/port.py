@@ -12,6 +12,10 @@ def port_create(network_id, ip_address,
                                    subnet_id, security_group_ids))
 
 
+def port_update(port_id, security_group_ids):
+    print_json(network.update_port(port_id, security_group_ids))
+
+
 def port_delete(port_id):
     print_json(network.delete_port(port_id))
 

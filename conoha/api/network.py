@@ -82,6 +82,22 @@ def create_port(network_id, ip_address,
     return http.post(f'{endpoint}/ports', data, headers)
 
 
+def update_port(port_id, security_group_ids):
+    '''
+    https://www.conoha.jp/docs/neutron-update_port.php
+    '''
+    headers = {
+        'Accept': 'application/json',
+        'X-Auth-Token': config.get_token()['id']
+    }
+    data = {
+        'port': {
+            'security_groups': security_group_ids
+        }
+    }
+    return http.put(f'{endpoint}/ports/{port_id}', data, headers)
+
+
 def delete_port(port_id):
     '''
     https://www.conoha.jp/docs/neutron-remove_port.php
