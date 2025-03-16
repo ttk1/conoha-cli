@@ -28,9 +28,9 @@ def save_credential(credential):
 
 def get_token():
     with open(token_path, mode="r", encoding="utf-8") as f:
-        return json.load(f)
+        return json.load(f)["token"]
 
 
 def save_token(token):
     with open(token_path, mode="w", encoding="utf-8") as f:
-        json.dump(token, f)
+        json.dump({"token": token}, f)

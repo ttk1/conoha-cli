@@ -1,6 +1,6 @@
 # ConoHa CLI
 
-[ConoHa API](https://www.conoha.jp/docs/) を CLI で良しなに扱うための何か。
+[ConoHa VPS Ver.3.0 の公開 API](https://doc.conoha.jp/reference/api-vps3/) を CLI で良しなに扱うための何か。
 
 自分が使うために作ったものなので、使わない機能は実装していません。
 
@@ -11,28 +11,30 @@
 ```json
 {
   "endpoint": {
-    "identity": "https://identity.tyo1.conoha.io/v2.0",
-    "compute": "https://compute.tyo1.conoha.io/v2/{tenant_id}",
-    "network": "https://networking.tyo1.conoha.io/v2.0"
+    "identity": "https://identity.c3j1.conoha.io/v3",
+    "compute": "https://compute.c3j1.conoha.io/v2.1",
+    "network": "https://networking.c3j1.conoha.io/v2.0",
+    "image": "https://image-service.c3j1.conoha.io/v2",
+    "volume": "https://block-storage.c3j1.conoha.io/v3/{テナントID}"
   }
 }
 ```
 
 エンドポイントの設定をここに記述します。
 ConoHa のコンソール画面に表示されているものを使って作成してください。
-`identity`, `compute`, `network` の３つが必要です。
+`identity`, `compute`, `network`, `image`, `volume` が必要です。
 
 ### `~/.conoha/credential.json`
 
 ```json
 {
   "user_name": "{user_name}",
-  "password": "{password}",
-  "tenant_id": "{tenant_id}"
+  "tenant_name": "{tenant_name}",
+  "password": "{password}"
 }
 ```
 
-API ユーザのユーザ名・パスワードとテナント ID をここに記述します。
+API ユーザのユーザ名、テナント名、パスワードをここに記述します。
 ファイルが無ければ `conoha auth login` コマンド実行時に入力を求められます。
 入力された内容は `credential.json` に保存されます。
 

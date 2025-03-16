@@ -1,7 +1,3 @@
-"""
-conoha server コマンドの処理部分
-"""
-
 from conoha.api import compute
 from conoha.util.misc import print_json
 
@@ -68,14 +64,12 @@ def server_describe(server_id):
 
 
 def server_create(
-    image_ref,
+    volume_id,
     flavor_ref,
     admin_pass=None,
     key_name=None,
     security_groups=None,
     instance_name_tag=None,
-    volume_id=None,
-    vnc_keymap=None,
     user_data=None,
 ):
     """
@@ -84,8 +78,8 @@ def server_create(
 
     Paramters
     ---------
-    image_ref: str
-        【必須項目】使用するイメージの UUID
+    volume_id: str
+        使用するブートストレージ用ボリュームの ID
     flavor_ref: str
         【必須項目】VM プランの UUID
     admin_pass: str
@@ -101,10 +95,6 @@ def server_create(
         多分デフォルトで作成されるポートに適用されるやつ
     instance_name_tag: str
         VM に設定するネームタグ
-    volume_id: str
-        アタッチする Volume の ID
-    vnc_keymap: str
-        キーマップ（en-us, ja のいずれか）
     user_data: str
         スタートアップスクリプト
         ※ ファイル名指定でもよいかも
@@ -115,14 +105,12 @@ def server_create(
     """
     print_json(
         compute.create_server(
-            image_ref,
+            volume_id,
             flavor_ref,
             admin_pass,
             key_name,
             security_groups,
             instance_name_tag,
-            volume_id,
-            vnc_keymap,
             user_data,
         )
     )
@@ -190,9 +178,6 @@ def server_delete(server_id, force):
             print("このサーバーは削除ロックされています。")
         else:
             print_json(compute.delete_server(server_id))
-
-
-###########################################################################
 
 
 def server_attach_port(server_id, port_id):
