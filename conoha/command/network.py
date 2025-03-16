@@ -1,6 +1,6 @@
-'''
+"""
 conoha network コマンドの処理部分
-'''
+"""
 
 from conoha.api import network
 from conoha.util.misc import print_json
@@ -9,12 +9,16 @@ from conoha.util.misc import print_json
 def network_list(local_only):
     if local_only:
         # local で始まる network のみを表示する
-        print_json({
-            'networks': list(filter(
-                lambda x: x.get('name', '').startswith('local'),
-                network.list_networks().get('networks', [])
-            ))
-        })
+        print_json(
+            {
+                "networks": list(
+                    filter(
+                        lambda x: x.get("name", "").startswith("local"),
+                        network.list_networks().get("networks", []),
+                    )
+                )
+            }
+        )
     else:
         print_json(network.list_networks())
 

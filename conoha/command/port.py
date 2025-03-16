@@ -1,15 +1,15 @@
-'''
+"""
 conoha port コマンドの処理部分
-'''
+"""
 
 from conoha.api import network
 from conoha.util.misc import print_json
 
 
-def port_create(network_id, ip_address,
-                subnet_id, security_group_ids=None):
-    print_json(network.create_port(network_id, ip_address,
-                                   subnet_id, security_group_ids))
+def port_create(network_id, ip_address, subnet_id, security_group_ids=None):
+    print_json(
+        network.create_port(network_id, ip_address, subnet_id, security_group_ids)
+    )
 
 
 def port_update(port_id, security_group_ids):

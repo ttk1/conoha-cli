@@ -1,13 +1,13 @@
-'''
+"""
 conoha server コマンドの処理部分
-'''
+"""
 
 from conoha.api import compute
 from conoha.util.misc import print_json
 
 
 def server_list(detail):
-    '''
+    """
     サーバーの一覧を JSON 形式で標準出力する。
 
     Paramters
@@ -18,7 +18,7 @@ def server_list(detail):
     Returns
     -------
     None
-    '''
+    """
     if detail:
         print_json(compute.list_servers_detail())
     else:
@@ -26,7 +26,7 @@ def server_list(detail):
 
 
 def server_search(keyword):
-    '''
+    """
     ネームタグをキーワード検索してヒットしたサーバーの詳細を表示する。
 
     Paramters
@@ -37,17 +37,22 @@ def server_search(keyword):
     Returns
     -------
     None
-    '''
-    print_json({
-        'servers': list(filter(
-            lambda x: keyword in x.get('metadata', {}).get('instance_name_tag', ''),
-            compute.list_servers_detail().get('servers', [])
-        ))
-    })
+    """
+    print_json(
+        {
+            "servers": list(
+                filter(
+                    lambda x: keyword
+                    in x.get("metadata", {}).get("instance_name_tag", ""),
+                    compute.list_servers_detail().get("servers", []),
+                )
+            )
+        }
+    )
 
 
 def server_describe(server_id):
-    '''
+    """
     指定したサーバーの情報を JSON 形式で標準出力する。
 
     Paramters
@@ -58,16 +63,22 @@ def server_describe(server_id):
     Returns
     -------
     None
-    '''
+    """
     print_json(compute.describe_server(server_id))
 
 
-def server_create(image_ref, flavor_ref,
-                  admin_pass=None, key_name=None,
-                  security_groups=None,
-                  instance_name_tag=None, volume_id=None,
-                  vnc_keymap=None, user_data=None):
-    '''
+def server_create(
+    image_ref,
+    flavor_ref,
+    admin_pass=None,
+    key_name=None,
+    security_groups=None,
+    instance_name_tag=None,
+    volume_id=None,
+    vnc_keymap=None,
+    user_data=None,
+):
+    """
     サーバーを新規に作成する。
     作成したサーバーの情報を JSON 形式で標準出力する。
 
@@ -101,16 +112,24 @@ def server_create(image_ref, flavor_ref,
     Returns
     -------
     None
-    '''
-    print_json(compute.create_server(image_ref, flavor_ref,
-                                     admin_pass, key_name,
-                                     security_groups,
-                                     instance_name_tag, volume_id,
-                                     vnc_keymap, user_data))
+    """
+    print_json(
+        compute.create_server(
+            image_ref,
+            flavor_ref,
+            admin_pass,
+            key_name,
+            security_groups,
+            instance_name_tag,
+            volume_id,
+            vnc_keymap,
+            user_data,
+        )
+    )
 
 
 def server_start(server_id):
-    '''
+    """
     指定したサーバーを起動する。
 
     Paramters
@@ -121,12 +140,12 @@ def server_start(server_id):
     Returns
     -------
     None
-    '''
+    """
     print_json(compute.start_server(server_id))
 
 
 def server_stop(server_id, force):
-    '''
+    """
     指定したサーバーを停止起動する。
 
     Paramters
@@ -139,12 +158,12 @@ def server_stop(server_id, force):
     Returns
     -------
     None
-    '''
+    """
     print_json(compute.stop_server(server_id, force))
 
 
 def server_delete(server_id, force):
-    '''
+    """
     指定したサーバーを削除する。
 
     Paramters
@@ -157,18 +176,21 @@ def server_delete(server_id, force):
     Returns
     -------
     None
-    '''
+    """
     if force:
         print_json(compute.delete_server(server_id))
     else:
-        is_delete_locked = (compute.describe_server(server_id)
-                            .get('server', {})
-                            .get('metadata', {})
-                            .get('IsDeleteLocked', 'False'))
-        if is_delete_locked == 'True':
-            print('このサーバーは削除ロックされています。')
+        is_delete_locked = (
+            compute.describe_server(server_id)
+            .get("server", {})
+            .get("metadata", {})
+            .get("IsDeleteLocked", "False")
+        )
+        if is_delete_locked == "True":
+            print("このサーバーは削除ロックされています。")
         else:
             print_json(compute.delete_server(server_id))
+
 
 ###########################################################################
 
