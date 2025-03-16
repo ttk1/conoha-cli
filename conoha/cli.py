@@ -9,6 +9,7 @@ from conoha.command import (
     security_group,
     server,
     subnet,
+    volume,
 )
 
 
@@ -87,12 +88,57 @@ def image_command(command):
     ).set_handler(image.image_search)
 
 
+def volume_command(command):
+    # conoha volume list-types
+    command.subcommand(name="volume").subcommand(
+        name="list-types", description="ボリュームタイプの一覧を表示する"
+    ).set_handler(volume.volume_list_types)
+
+    # conoha volume list
+    command.subcommand(name="volume").subcommand(
+        name="list", description="ボリュームの一覧を表示する"
+    ).set_handler(volume.volume_list)
+
+    # conoha volume create ...
+    command.subcommand(name="volume").subcommand(
+        name="create", description="ブートストレージ用のボリュームを作成する"
+    ).add_argument(
+        "--size",
+        help="ボリュームのサイズ (512MB プランは 30、それ以外は 100 固定)",
+        type=int,
+        choices=[30, 100],
+        required=True,
+    ).add_argument(
+        "--description", help="ボリュームの概要"
+    ).add_argument(
+        "--name", help="ボリューム名", required=True
+    ).add_argument(
+        "--image-ref", help="使用するイメージの UUID を指定", required=True
+    ).set_handler(
+        volume.volume_create
+    )
+
+    # conoha volume delete --volume-id VOLUME_ID
+    command.subcommand(name="volume").subcommand(
+        name="delete", description="ボリュームを削除する"
+    ).add_argument("--volume-id", help="ボリュームID", required=True).add_argument(
+        "-f",
+        "--force",
+        action="store_true",
+        help="エラーステータスのボリュームを強制的に削除する",
+    ).set_handler(
+        volume.volume_delete
+    )
+
+
 def server_command(command):
     # conoha server create ...
     command.subcommand(name="server").subcommand(
         name="create", description="VM を作成する"
     ).add_argument(
-        "--image-ref", help="使用するイメージの UUID を指定", required=True
+        "--volume-id",
+        help="使用するブートストレージ用ボリュームの ID を指定",
+        required=True,
     ).add_argument(
         "--flavor-ref", help="VM プラン（flavor）の UUID を指定", required=True
     ).add_argument(
@@ -109,13 +155,7 @@ def server_command(command):
         nargs="+",
     ).add_argument(
         "--instance-name-tag",
-        help="ネームタグを入れる際に利用する。文字種：半角英数字、「 - 」、「 _ 」のみを許可。文字数：255文字以下, Default:VMに紐づくGlobalIPアドレス",
-    ).add_argument(
-        # API の仕様で一つしか指定できない
-        "--volume-id",
-        help="アタッチする Volume の ID を指定",
-    ).add_argument(
-        "--vnc-keymap", choices=["en-us", "ja"], help="キーマップを指定"
+        help="ネームタグ。コントロールパネルのネームタグに反映される。指定なしだと null になるので注意。",
     ).add_argument(
         # ファイル指定でも良いかもしれない
         "--user-data",
@@ -434,6 +474,7 @@ def main():
     auth_command(command)
     flavor_command(command)
     image_command(command)
+    volume_command(command)
     server_command(command)
     subnet_command(command)
     security_group_command(command)

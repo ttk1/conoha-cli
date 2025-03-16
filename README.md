@@ -11,16 +11,18 @@
 ```json
 {
   "endpoint": {
-    "identity": "https://identity.tyo1.conoha.io/v2.0",
-    "compute": "https://compute.tyo1.conoha.io/v2/{tenant_id}",
-    "network": "https://networking.tyo1.conoha.io/v2.0"
+    "identity": "https://identity.c3j1.conoha.io/v3",
+    "compute": "https://compute.c3j1.conoha.io/v2.1",
+    "network": "https://networking.c3j1.conoha.io/v2.0",
+    "image": "https://image-service.c3j1.conoha.io/v2",
+    "volume": "https://block-storage.c3j1.conoha.io/v3/{テナントID}"
   }
 }
 ```
 
 エンドポイントの設定をここに記述します。
 ConoHa のコンソール画面に表示されているものを使って作成してください。
-`identity`, `compute`, `network` の３つが必要です。
+`identity`, `compute`, `network`, `image`, `volume` が必要です。
 
 ### `~/.conoha/credential.json`
 
