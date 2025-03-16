@@ -1,7 +1,3 @@
-"""
-conoha port コマンドの処理部分
-"""
-
 from conoha.api import network
 from conoha.util.misc import print_json
 

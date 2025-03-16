@@ -230,7 +230,14 @@ def subnet_command(command):
     # conoha subnet list
     command.subcommand(name="subnet").subcommand(
         name="list", description="サブネットの一覧を表示する"
-    ).set_handler(subnet.subnet_list)
+    ).add_argument(
+        "-l",
+        "--local-only",
+        action="store_true",
+        help="ローカルサブネットのみを表示する",
+    ).set_handler(
+        subnet.subnet_list
+    )
 
     # conoha subnet describe --subnet-id SUBNET_ID
     command.subcommand(name="subnet").subcommand(

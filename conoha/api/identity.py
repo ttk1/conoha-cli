@@ -1,7 +1,3 @@
-"""
-Identity API の呼び出し部分
-"""
-
 from conoha import config
 from conoha.util import http
 

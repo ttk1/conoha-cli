@@ -1,7 +1,3 @@
-"""
-conoha subnet コマンドの処理部分
-"""
-
 from conoha.api import network
 from conoha.util.misc import print_json
 
@@ -20,9 +16,6 @@ def security_group_list():
 
 def security_group_describe(security_group_id):
     print_json(network.describe_security_group(security_group_id))
-
-
-###########################################################################
 
 
 def secutiry_group_create_rule(
