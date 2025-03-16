@@ -40,9 +40,6 @@ def describe_network(network_id):
     return http.get(f"{endpoint}/networks/{network_id}", headers)
 
 
-###########################################################################
-
-
 def create_port(network_id, ip_address, subnet_id, security_group_ids=None):
     """
     https://www.conoha.jp/docs/neutron-add_port.php
@@ -97,9 +94,6 @@ def describe_port(port_id):
     return http.get(f"{endpoint}/ports/{port_id}", headers)
 
 
-###########################################################################
-
-
 def create_subnet(network_id, cidr):
     """
     https://www.conoha.jp/docs/neutron-add_subnet.php
@@ -131,9 +125,6 @@ def describe_subnet(subnet_id):
     """
     headers = {"Accept": "application/json", "X-Auth-Token": config.get_token()["id"]}
     return http.get(f"{endpoint}/subnets/{subnet_id}", headers)
-
-
-###########################################################################
 
 
 def create_security_group(name, description=None):
@@ -174,9 +165,6 @@ def describe_security_group(security_group_id):
     """
     headers = {"Accept": "application/json", "X-Auth-Token": config.get_token()["id"]}
     return http.get(f"{endpoint}/security-groups/{security_group_id}", headers)
-
-
-###########################################################################
 
 
 def create_security_group_rule(

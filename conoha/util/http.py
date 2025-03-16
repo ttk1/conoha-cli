@@ -15,6 +15,14 @@ def post(url, data, headers):
             return body
 
 
+def post_for_token(url, data, headers):
+    req = urllib.request.Request(
+        url, data=json.dumps(data).encode("utf-8"), headers=headers
+    )
+    with urllib.request.urlopen(req) as res:
+        return res.getheader("x-subject-token")
+
+
 def get(url, headers):
     req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req) as res:

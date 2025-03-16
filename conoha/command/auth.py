@@ -14,19 +14,14 @@ def auth_login():
     except FileNotFoundError:
         credential = {
             "user_name": input("Enter user name: "),
+            "tenant_name": input("Enter tenant name: "),
             "password": getpass("Enter password: "),
-            "tenant_id": input("Enter tenant id: "),
         }
         config.save_credential(credential)
-    res = identity.get_token(
-        credential["user_name"], credential["password"], credential["tenant_id"]
+    token = identity.get_token(
+        credential["user_name"], credential["password"], credential["tenant_name"]
     )
-    config.save_token(
-        {
-            "id": res["access"]["token"]["id"],
-            "expires": res["access"]["token"]["expires"],
-        }
-    )
+    config.save_token(token)
 
 
 def auth_logout():

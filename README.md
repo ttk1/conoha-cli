@@ -1,6 +1,6 @@
 # ConoHa CLI
 
-[ConoHa API](https://www.conoha.jp/docs/) を CLI で良しなに扱うための何か。
+[ConoHa VPS Ver.3.0 の公開 API](https://doc.conoha.jp/reference/api-vps3/) を CLI で良しなに扱うための何か。
 
 自分が使うために作ったものなので、使わない機能は実装していません。
 
@@ -27,12 +27,12 @@ ConoHa のコンソール画面に表示されているものを使って作成�
 ```json
 {
   "user_name": "{user_name}",
-  "password": "{password}",
-  "tenant_id": "{tenant_id}"
+  "tenant_name": "{tenant_name}",
+  "password": "{password}"
 }
 ```
 
-API ユーザのユーザ名・パスワードとテナント ID をここに記述します。
+API ユーザのユーザ名、テナント名、パスワードをここに記述します。
 ファイルが無ければ `conoha auth login` コマンド実行時に入力を求められます。
 入力された内容は `credential.json` に保存されます。
 

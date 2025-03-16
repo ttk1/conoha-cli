@@ -18,18 +18,12 @@ def list_flavors():
     return http.get(f"{endpoint}/flavors", headers)
 
 
-###########################################################################
-
-
 def list_images():
     """
     https://www.conoha.jp/docs/compute-get_images_list.php
     """
     headers = {"Accept": "application/json", "X-Auth-Token": config.get_token()["id"]}
     return http.get(f"{endpoint}/images", headers)
-
-
-###########################################################################
 
 
 def list_servers():
@@ -125,9 +119,6 @@ def delete_server(server_id):
     """
     headers = {"Accept": "application/json", "X-Auth-Token": config.get_token()["id"]}
     return http.delete(f"{endpoint}/servers/{server_id}", headers)
-
-
-###########################################################################
 
 
 def attach_port(server_id, port_id):
